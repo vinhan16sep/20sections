@@ -12,9 +12,7 @@ use Validator;
 class LoginController extends Controller
 {
 
-
     public $successStatus = 200;
-
 
     /**
      * login api
@@ -33,7 +31,6 @@ class LoginController extends Controller
         }
     }
 
-
     /**
      * Register api
      *
@@ -45,22 +42,19 @@ class LoginController extends Controller
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required',
-            'c_password' => 'required|same:password',
-            'role' => 'required',
+            'c_password' => 'required|same:password'
         ]);
-
 
         if ($validator->fails()) {
             return response()->json(['error'=>$validator->errors()], 401);
         }
 
-
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
+        $input['role'] = 98;
         $user = User::create($input);
         $success['token'] =  $user->createToken('Brand')->accessToken;
         $success['name'] =  $user->name;
-
 
         return response()->json(['success'=>$success], $this->successStatus);
     }
@@ -89,27 +83,24 @@ class LoginController extends Controller
      */
     public function publisherRegister(Request $request){
         $validator = Validator::make($request->all(), [
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'email' => 'required',
-            'phone' => 'required',
+            'name' => 'required',
+            'email' => 'required|email',
             'password' => 'required',
             'c_password' => 'required|same:password'
         ]);
+
         if ($validator->fails()) {
             return response()->json(['error'=>$validator->errors()], 401);
         }
+
         $success =  false;
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
-        $input['role'] = 89;
-        unset($input['c_password']);
+        $input['role'] = 99;
         if($user = User::create($input)){
             $success =  true;
+            $success['token'] =  $user->createToken('Publisher')->accessToken;
         }
-
-        // $success['token'] =  $user->createToken('Brand')->accessToken;
-
 
         return response()->json(['success'=>$success], $this->successStatus);
     }
