@@ -1,0 +1,26 @@
+/*
+===== MAIN COLOR =====
+ */
+
+$color_brand: #ff851b;
+$color_brand_hover: #ff7701;
+
+$color_client: #39cccc;
+$color_client_hover: #30bbbb;
+
+$color_paragraph: #7e8080;
+
+/*
+===== MIXIN =====
+ */
+
+@mixin reset_padding{
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+@mixin blur10px{
+    filter: blur(10px);
+}
