@@ -1,0 +1,174 @@
+/*
+CSS for Main Site
+
+Author: hung.luong@matocreative.vn
+ */
+/*
+===== MAIN COLOR =====
+ */
+/*
+===== MIXIN =====
+ */
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; }
+
+/*
+===== RESET BOOTSTRAP =====
+ */
+a:hover {
+  text-decoration: none; }
+
+p {
+  color: #7e8080; }
+
+/*
+===== HEADER =====
+ */
+/*
+===== BODY =====
+ */
+.main_content {
+  padding-top: 30px;
+  padding-bottom: 50px; }
+
+/*
+===== FOOTER =====
+ */
+/*
+===== MODAL PART =====
+ */
+@media (min-width: 1200px) {
+  .modal-lg {
+    width: 95%; } }
+.modal-dialog {
+  height: 90%; }
+  .modal-dialog .modal-content {
+    height: 100%; }
+  .modal-dialog .modal-body {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 100%; }
+    .modal-dialog .modal-body .row {
+      height: 100%; }
+      .modal-dialog .modal-body .row .right {
+        padding-top: 150px;
+        padding-bottom: 150px;
+        position: relative;
+        height: 100%; }
+        .modal-dialog .modal-body .row .right .close {
+          position: absolute;
+          top: 10px;
+          right: 10px; }
+        .modal-dialog .modal-body .row .right .left {
+          position: absolute;
+          top: 0;
+          left: -100%;
+          height: 100%;
+          border-top-left-radius: 6px;
+          border-bottom-left-radius: 6px;
+          padding-left: 0;
+          padding-right: 0;
+          padding-top: 0;
+          padding-bottom: 0; }
+          @media (max-width: 970px) {
+            .modal-dialog .modal-body .row .right .left {
+              left: 0; } }
+          .modal-dialog .modal-body .row .right .left .mask {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-top-left-radius: 6px;
+            border-bottom-left-radius: 6px; }
+            .modal-dialog .modal-body .row .right .left .mask img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              opacity: 0.3; }
+          .modal-dialog .modal-body .row .right .left .featured {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            top: 50%;
+            left: 50%;
+            margin-top: -40%;
+            margin-left: -40%;
+            padding: 15px; }
+            .modal-dialog .modal-body .row .right .left .featured .media .media-left {
+              width: 20%; }
+            .modal-dialog .modal-body .row .right .left .featured #featured_brand .media-left i {
+              color: #ff851b; }
+            .modal-dialog .modal-body .row .right .left .featured #featured_brand .media-body h3 {
+              color: #ff851b;
+              font-weight: bold; }
+            .modal-dialog .modal-body .row .right .left .featured #featured_client .media-left i {
+              color: #39cccc; }
+            .modal-dialog .modal-body .row .right .left .featured #featured_client .media-body h3 {
+              color: #39cccc;
+              font-weight: bold; }
+          .modal-dialog .modal-body .row .right .left .logo {
+            position: absolute;
+            top: 15px;
+            left: 15px; }
+            .modal-dialog .modal-body .row .right .left .logo img {
+              width: 100px; }
+        .modal-dialog .modal-body .row .right .content ul.nav-pills li a {
+          color: #333; }
+        .modal-dialog .modal-body .row .right .content ul.nav-pills li.active a[href="#view_login_brand"] {
+          background-color: #ff851b;
+          color: #fff; }
+        .modal-dialog .modal-body .row .right .content ul.nav-pills li.active a[href="#view_login_client"] {
+          background-color: #39cccc;
+          color: #fff; }
+        .modal-dialog .modal-body .row .right .content .tab-content #view_login_brand h3.title {
+          color: #ff851b;
+          text-align: center; }
+        .modal-dialog .modal-body .row .right .content .tab-content #view_login_brand label {
+          color: #ff851b; }
+        .modal-dialog .modal-body .row .right .content .tab-content #view_login_brand .form-control:focus,
+        .modal-dialog .modal-body .row .right .content .tab-content #view_login_brand .form-control:active {
+          -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 133, 27, 0.6);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 133, 27, 0.6);
+          border-color: #ff851b; }
+        .modal-dialog .modal-body .row .right .content .tab-content #view_login_brand .btn-primary {
+          width: 100%;
+          background-color: #ff851b;
+          border-color: transparent; }
+          .modal-dialog .modal-body .row .right .content .tab-content #view_login_brand .btn-primary:hover {
+            background-color: #ff7701; }
+        .modal-dialog .modal-body .row .right .content .tab-content #view_login_brand .forgot_password a {
+          color: #ff851b; }
+        .modal-dialog .modal-body .row .right .content .tab-content #view_login_brand .forgot_password a:hover {
+          color: #ff7701; }
+        .modal-dialog .modal-body .row .right .content .tab-content #view_login_client h3.title {
+          color: #39cccc;
+          text-align: center; }
+        .modal-dialog .modal-body .row .right .content .tab-content #view_login_client label {
+          color: #39cccc; }
+        .modal-dialog .modal-body .row .right .content .tab-content #view_login_client .form-control:focus,
+        .modal-dialog .modal-body .row .right .content .tab-content #view_login_client .form-control:active {
+          -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(57, 204, 204, 0.6);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(57, 204, 204, 0.6);
+          border-color: #39cccc; }
+        .modal-dialog .modal-body .row .right .content .tab-content #view_login_client .btn-primary {
+          width: 100%;
+          background-color: #39cccc;
+          border-color: transparent; }
+          .modal-dialog .modal-body .row .right .content .tab-content #view_login_client .btn-primary:hover {
+            background-color: #30bbbb; }
+        .modal-dialog .modal-body .row .right .content .tab-content #view_login_client a {
+          color: #39cccc; }
+        .modal-dialog .modal-body .row .right .content .tab-content #view_login_client a:hover {
+          color: #30bbbb; }
+        .modal-dialog .modal-body .row .right .content .tab-content #view_login_client .forgot_password a {
+          color: #39cccc; }
+        .modal-dialog .modal-body .row .right .content .tab-content #view_login_client .forgot_password a:hover {
+          color: #30bbbb; }
+        .modal-dialog .modal-body .row .right .content .tab-content .forgot_password {
+          padding-top: 15px;
+          padding-bottom: 15px; }
+
+/*# sourceMappingURL=main.css.map */

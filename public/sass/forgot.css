@@ -1,0 +1,31 @@
+/*
+===== MAIN COLOR =====
+ */
+/*
+===== MIXIN =====
+ */
+.main_content {
+  width: 100%;
+  height: 100%; }
+  .main_content .jumbotron .form-control:focus,
+  .main_content .jumbotron .form-control:active {
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 133, 27, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 133, 27, 0.6);
+    border-color: #ff851b; }
+  .main_content .jumbotron .btn-primary {
+    background-color: #ff851b;
+    border-color: transparent; }
+
+.main_content#forgot_view {
+  background-image: url("../img/background/forgot_bg.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover; }
+
+.main_content#reset_view {
+  background-image: url("../img/background/reset_bg.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover; }
+
+/*# sourceMappingURL=forgot.css.map */

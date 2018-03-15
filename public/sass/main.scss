@@ -1,0 +1,284 @@
+/*
+CSS for Main Site
+
+Author: hung.luong@matocreative.vn
+ */
+
+@import "setting_colors";
+
+body, html{
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+/*
+===== RESET BOOTSTRAP =====
+ */
+
+a:hover{
+    text-decoration: none;
+}
+
+p{
+    color: #7e8080;
+}
+
+
+/*
+===== HEADER =====
+ */
+
+/*
+===== BODY =====
+ */
+
+.main_content{
+
+    padding-top: 30px;
+    padding-bottom: 50px;
+}
+
+/*
+===== FOOTER =====
+ */
+
+/*
+===== MODAL PART =====
+ */
+
+@media (min-width: 1200px) {
+    .modal-lg{
+          width: 95%;
+    }
+}
+
+.modal-dialog{
+    height: 90%;
+
+    .modal-content{
+        height: 100%;
+    }
+
+    .modal-body{
+        @include reset_padding;
+
+        height: 100%;
+
+        .row{
+            height: 100%;
+
+            .right{
+                padding-top: 150px;
+                padding-bottom: 150px;
+
+                position: relative;
+
+                height: 100%;
+
+                .close{
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                }
+
+                .left{
+                    position: absolute;
+                    top: 0;
+                    left: -100%;
+
+                    height: 100%;
+
+                    border-top-left-radius: 6px;
+                    border-bottom-left-radius: 6px;
+
+                    @include reset_padding;
+
+                    @media (max-width: 970px){
+                        left: 0;
+                    }
+
+                    .mask{
+                        width: 100%;
+                        height: 100%;
+                        overflow: hidden;
+
+                        border-top-left-radius: 6px;
+                        border-bottom-left-radius: 6px;
+
+                        img{
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+
+                            opacity: 0.3;
+                        }
+                    }
+
+                    .featured{
+                        position: absolute;
+                        width: 80%;
+                        height: 80%;
+                        top: 50%;
+                        left: 50%;
+                        margin-top: -40%;
+                        margin-left: -40%;
+                        padding: 15px;
+
+                        .media{
+                            .media-left{
+                                width: 20%;
+                            }
+                        }
+
+                        #featured_brand{
+                            .media-left i{
+                                color: $color_brand;
+                            }
+
+                            .media-body h3{
+                                color: $color_brand;
+                                font-weight: bold;
+                            }
+                        }
+
+                        #featured_client{
+                            .media-left i{
+                                color: $color_client;
+                            }
+
+                            .media-body h3{
+                                color: $color_client;
+                                font-weight: bold;
+                            }
+                        }
+                    }
+
+                    .logo{
+                        position: absolute;
+                        top: 15px;
+                        left: 15px;
+
+                        img{
+                            width: 100px;
+                        }
+                    }
+                }
+
+                .content{
+
+                    ul.nav-pills{
+                        li{
+                            a{
+                                color: #333;
+                            }
+                        }
+
+                        li.active{
+                            a[href="#view_login_brand"]{
+                                background-color: $color_brand;
+                                color: #fff;
+                            }
+
+                            a[href="#view_login_client"]{
+                                background-color: $color_client;
+                                color: #fff;
+                            }
+                        }
+                    }
+
+                    .tab-content{
+
+                        #view_login_brand{
+                            h3.title{
+                                color: $color_brand;
+                                text-align: center;
+                            }
+
+                            label{
+                                color: $color_brand;
+                            }
+
+                            .form-control:focus,
+                            .form-control:active{
+                                -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255,133,27, .6);
+                                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255,133,27, .6);
+                                border-color: $color_brand;
+                            }
+
+                            .btn-primary{
+                                width: 100%;
+                                background-color: $color_brand;
+                                border-color: transparent;
+
+                                &:hover{
+                                    background-color: $color_brand_hover;
+                                }
+                            }
+
+                            .forgot_password{
+                                a{
+                                    color: $color_brand;
+                                }
+                                a:hover{
+                                    color: $color_brand_hover;
+                                }
+                            }
+                        }
+
+                        #view_login_client{
+                            h3.title{
+                                color: $color_client;
+                                text-align: center;
+                            }
+
+                            label{
+                                color: $color_client;
+                            }
+
+                            .form-control:focus,
+                            .form-control:active{
+                                -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(57,204,204, .6);
+                                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(57,204,204, .6);
+                                border-color: $color_client;
+                            }
+
+                            .btn-primary{
+                                width: 100%;
+                                background-color: $color_client;
+                                border-color: transparent;
+
+                                &:hover{
+                                    background-color: $color_client_hover;
+                                }
+                            }
+
+                            a{
+                                color: $color_client;
+                            }
+                            a:hover{
+                                color: $color_client_hover;
+                            }
+
+                            .forgot_password{
+                                a{
+                                    color: $color_client;
+                                }
+                                a:hover{
+                                    color: $color_client_hover;
+                                }
+                            }
+                        }
+
+                        .forgot_password{
+                            padding-top: 15px;
+                            padding-bottom: 15px;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}
+
