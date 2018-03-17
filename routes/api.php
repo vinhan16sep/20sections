@@ -27,6 +27,10 @@ Route::prefix('v1')->group(function() {
         Route::post('publisher-login', 'LoginController@publisherLogin');
         Route::post('publisher-register', 'LoginController@publisherRegister');
 
+        /* Check role */
+        Route::get('check', 'LoginController@checkRole');
+
         Route::middleware('auth:api')->post('detail', 'UserController@detail');
+        Route::middleware('auth:api')->post('check-role', 'LoginController@checkRole');
     });
 });
