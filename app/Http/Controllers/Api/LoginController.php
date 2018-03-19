@@ -105,4 +105,9 @@ class LoginController extends Controller
         return response()->json(['success'=>$success], $this->successStatus);
     }
 
+    public function checkRole()
+    {
+        $role = Auth::guard('api')->user()->role;
+        return response()->json(['data'=>$role, 'status' => 200], 200);
+    }
 }
