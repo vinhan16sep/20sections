@@ -34,3 +34,14 @@ Route::prefix('v1')->group(function() {
         Route::middleware('auth:api')->post('check-role', 'LoginController@checkRole');
     });
 });
+
+/*
+ * Demo routes for brand
+ * In this part, we will build routers for Demo
+ * Or whatever ...
+ */
+Route::post('/demo', 'DemoController@postDemo');
+Route::get('/demos', 'DemoController@getDemos');
+Route::put('/demo/{id}', 'DemoController@putDemo');
+Route::delete('/demo/{id}', 'DemoController@deleteDemo');
+
