@@ -37,4 +37,8 @@ table.table_product .mask {
 table tr td .category-active {
     cursor: pointer;
 }
+table tr td .branding-active {
+    cursor: pointer;
+}
+
 /*# sourceMappingURL=datatable.css.map */

@@ -26,4 +26,17 @@ class Controller extends BaseController
 
         return $queryInput;
     }
+
+    protected function buildNewFolderPath($path, $fileName){
+        $newPath = $path . '/' . $fileName;
+        $newName = $fileName;
+        $counter = 1;
+        while (file_exists($newPath)) {
+            $newName = $counter . '-' . $fileName;
+            $newPath = $path . '/' . $newName;
+            $counter++;
+        }
+
+        return array($newName, $newPath);
+    }
 }
