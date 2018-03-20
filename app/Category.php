@@ -10,4 +10,8 @@ class Category extends Model
 
     protected $guarded = [];
 
+    public function branding()
+    {
+        return $this->hasMany('App\Branding');
+    }
 }

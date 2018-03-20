@@ -7,38 +7,43 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
-use App\Category;
+use App\Branding;
 use File;
 use DateTime;
 
-class CategoryController extends Controller
+class BrandingController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct()
-    {
-        $this->middleware('auth:admin');
-    }
-
     public function index()
     {
-        $category = DB::table('category')->where('is_deleted', 0)->paginate(10);
+        $category = DB::table('category')->get();
+        $branding = Branding::with('category')->where('is_deleted', 0)->paginate(10);
         $keyword = Input::get('search');
+        $category_id = Input::get('category_id');
         if($keyword != ''){
-            $category = DB::table('category')
+            $branding = Branding::with('category')
                             ->where([
                                 ['is_deleted' , 0],
                                 ['name', 'like', '%'.$keyword.'%']
-                            ])->paginate(1);
-            $category->setPath('category?search='.$keyword);
+                            ])->paginate(10);
+            $branding->setPath('branding?search='.$keyword.'&category_id='.$category_id);
+        }
+        if($category_id != ''){
+            $branding = Branding::with('category')
+                            ->where([
+                                ['is_deleted' , 0],
+                                ['category_id', $category_id]
+                            ])->paginate(10);
+            $branding->setPath('branding?search='.$keyword.'&category_id='.$category_id);
         }
         
 
         
-        return view('admin.category.index', ['category' => $category, 'keyword' => $keyword]);
+        return view('admin.branding.index', ['branding' => $branding, 'category' => $category, 'keyword' => $keyword, 'category_id' => $category_id]);
     }
 
     /**
@@ -48,7 +53,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.category.create');
+        $category = DB::table('category')->get();
+        return view('admin.branding.create', ['category' => $category]);
     }
 
     /**
@@ -61,33 +67,35 @@ class CategoryController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
+            'category_id' => 'required',
         ],[
             'name.required' => 'Tiêu đề không được trống',
+            'category_id.required' => 'Danh mục không được trống',
         ]);
 
 
 
-        $path = base_path() . '/storage/app/category/';
+        $path = base_path() . '/storage/app/branding/';
         $input = $request->all();
         $slug = str_slug($request->input('name'));
-        $uniqueSlug = $this->buildUniqueSlug('category', $request->id, $slug);
+        $uniqueSlug = $this->buildUniqueSlug('branding', $request->id, $slug);
         $file = null;
         if(Input::file('image')){
             $file = Input::file('image')->getClientOriginalName();
         }
         $newFolderPath = $this->buildNewFolderPath($path, $file);
-        $data =  ['name' => $input['name'], 'slug' => $uniqueSlug, 'description' => $input['description']];
+        $data =  ['name' => $input['name'], 'slug' => $uniqueSlug, 'description' => $input['description'], 'category_id' => $input['category_id']];
         // File::makeDirectory($newFolderPath[1], 0777, true, true);
         if(Input::file('image')){
             $data['image'] = $newFolderPath[0];
         }
         $data['created_at'] =new DateTime();
-        if(DB::table('category')->insert($data)){
+        if(DB::table('branding')->insert($data)){
             if(Input::file('image')){
                 Input::file('image')->move($path, $newFolderPath[0]);
             }
         }
-        return redirect()->intended('20s-admin/category');
+        return redirect()->intended('20s-admin/branding');
     }
 
     /**
@@ -109,8 +117,9 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::find($id);
-        return view('admin.category.edit', ['category' => $category]);
+        $category = DB::table('category')->get();
+        $branding = Branding::with('category')->where(['is_deleted'=> 0, 'id' => $id])->first();
+        return view('admin.branding.edit', ['branding' => $branding, 'category' => $category]);
     }
 
     /**
@@ -124,13 +133,15 @@ class CategoryController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
+            'category_id' => 'required',
         ],[
             'name.required' => 'Tiêu đề không được trống',
+            'category_id.required' => 'Danh mục không được trống',
         ]);
 
 
-        $category = Category::findOrFail($id);
-        $path = base_path() . '/storage/app/category/';
+        $category = Branding::findOrFail($id);
+        $path = base_path() . '/storage/app/branding/';
         $input = $request->all();
         $file = null;
         if(Input::file('image')){
@@ -139,18 +150,18 @@ class CategoryController extends Controller
         $slug = str_slug($request->input('name'));
         $uniqueSlug = $this->buildUniqueSlug('category', $request->id, $slug);
         $newFolderPath = $this->buildNewFolderPath($path, $file);
-        $data = ['name' => $input['name'], 'slug' => $uniqueSlug, 'description' => $input['description']];
+        $data =  ['name' => $input['name'], 'slug' => $uniqueSlug, 'description' => $input['description'], 'category_id' => $input['category_id']];
         $data['updated_at'] =new DateTime();
         if(Input::file('image')){
             $data['image'] = $newFolderPath[0];
         }
-        if(DB::table('category')->where('id', $id)->update($data)){
+        if(DB::table('branding')->where('id', $id)->update($data)){
             if(Input::file('image')){
                 File::delete($path.'/'.$category->image);
                 Input::file('image')->move($path, $newFolderPath[0]);
             }
         }
-        return redirect()->intended('20s-admin/category');
+        return redirect()->intended('20s-admin/branding');
     }
 
     /**
@@ -167,10 +178,10 @@ class CategoryController extends Controller
     public function remove(Request $request)
     {
         $id = $request->id;
-        $category = Category::findOrFail($id);
+        $branding = Branding::findOrFail($id);
         $success = false;
-        if($category){
-            $result = DB::table('category')
+        if($branding){
+            $result = DB::table('branding')
             ->where('id', $id)
             ->update(['is_deleted' => 1]);
             if($result){
@@ -183,15 +194,15 @@ class CategoryController extends Controller
     public function active(Request $request)
     {
         $id = $request->id;
-        $category = Category::findOrFail($id);
+        $branding = Branding::findOrFail($id);
         $success = false;
-        if($category){
-            if($category->is_activated == 0){
-                $result = DB::table('category')
+        if($branding){
+            if($branding->is_activated == 0){
+                $result = DB::table('branding')
                 ->where('id', $id)
                 ->update(['is_activated' => 1]);
             }else{
-                $result = DB::table('category')
+                $result = DB::table('branding')
                 ->where('id', $id)
                 ->update(['is_activated' => 0]);
             }
@@ -200,18 +211,5 @@ class CategoryController extends Controller
             }
         }
         return response()->json(['success' => $success, 'status' => '200']);
-    }
-
-    function buildNewFolderPath($path, $fileName){
-        $newPath = $path . '/' . $fileName;
-        $newName = $fileName;
-        $counter = 1;
-        while (file_exists($newPath)) {
-            $newName = $counter . '-' . $fileName;
-            $newPath = $path . '/' . $newName;
-            $counter++;
-        }
-
-        return array($newName, $newPath);
     }
 }
