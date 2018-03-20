@@ -41,3 +41,16 @@ Route::prefix('20s-admin')->group(function(){
     Route::post('/password/reset', 'Auth\AdminResetPasswordController@reset');
     Route::get('/password/reset/{token}', 'Auth\AdminResetPasswordController@showResetForm')->name('admin.password.reset');
 });
+
+
+Route::group(['middleware' => ['auth:admin']], function () {
+    Route::prefix('20s-admin')->group(function(){
+        Route::namespace('admin')->group(function () {
+            Route::resource('category', 'CategoryController');
+            Route::post('category/update/{id}', 'CategoryController@update')->name('category.update');
+            Route::post('category/remove', 'CategoryController@remove');
+            Route::post('category/active', 'CategoryController@active');
+            Route::get('category/{search?}/{page?}', 'CategoryController@index');
+        });
+    });
+});
