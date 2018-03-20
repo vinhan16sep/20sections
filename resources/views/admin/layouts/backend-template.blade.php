@@ -18,6 +18,9 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ asset('public/lib/dist/css/skins/skin-black-light.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('public/lib/dataTable/css/dataTables.bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/sass/datatable.css') }}">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -34,6 +37,12 @@
     <script src="{{ asset('public/lib/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 3.3.7 -->
     <script src="{{ asset('public/lib/bootstrap/js/bootstrap.min.js') }}"></script>
+    <!-- STYLE -->
+
+
+<!-- SCRIPT -->
+<script src="{{ asset('public/lib/dataTable/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('public/lib/dataTable/js/dataTables.bootstrap.min.js') }}"></script>
 
 
 </head>
@@ -46,9 +55,7 @@
 
     @include('admin.layouts.sidebar')
 
-    <div class="content-wrapper">
-        @yield('content')
-    </div>
+    @yield('content')
 
     <!-- /.content-wrapper -->
 <footer class="main-footer">
