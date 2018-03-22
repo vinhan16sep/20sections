@@ -13,29 +13,28 @@ class DemoController extends Controller
     }
 
     /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getDemos(){
+        $demos = Demo::all();
+
+        return response()->json(['demos' => $demos], 200);
+    }
+
+    /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function postDemo(Request $request){
 
-        if(!$user = JWTAuth::parseToken()->authenticate()){
-            return response()->json([
-                'message' => 'User not found'
-            ], 404);
-        }
+        $user = JWTAuth::parseToken()->toUser();
 
         $demo = new Demo();
 
         $demo->content = $request->input('content');
         $demo->save();
 
-        return response()->json(['demo' => $demo], 201);
-    }
-
-    public function getDemos(){
-        $demos = Demo::all();
-
-        return response()->json(['demos' => $demos], 200);
+        return response()->json(['demo' => $demo, 'user' => $user], 201);
     }
 
     public function putDemo(Request $request, $id){
