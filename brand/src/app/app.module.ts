@@ -9,11 +9,13 @@ import { AppRoutingModule } from "./app.routing";
 
 import { AppComponent } from './app.component';
 import { NotFoundComponent } from './not-found.component';
+import { NewDemoComponent } from './demo/new-demo/new-demo.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         NotFoundComponent,
+        NewDemoComponent,
     ],
     imports: [
         BrowserModule,
