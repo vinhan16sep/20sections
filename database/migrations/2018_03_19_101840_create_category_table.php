@@ -17,7 +17,7 @@ class CreateCategoryTable extends Migration
             $table->increments('id');
             $table->string('name', 255);
             $table->string('slug', 255);
-            $table->tinyInteger('is_delete');
+            $table->tinyInteger('is_deleted');
             $table->timestamps();
         });
     }

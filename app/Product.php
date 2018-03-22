@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Branding extends Model
+class Product extends Model
 {
-    protected $table = 'branding';
+    protected $table = 'product';
 
     protected $guarded = [];
 
@@ -15,8 +15,8 @@ class Branding extends Model
         return $this->belongsTo('App\Category');
     }
 
-    public function product()
+    public function Branding()
     {
-        return $this->hasMany('App\Product');
+        return $this->belongsTo('App\Branding');
     }
 }

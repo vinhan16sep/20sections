@@ -13,7 +13,7 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     protected function buildUniqueSlug($table, $id, $slug){
-        $slugCount = count(DB::table($table)->select('*')->whereRaw("slug REGEXP '^{$slug}(-[0-9]+)?$' and 'id' != '{$id}'")->get());
+        $slugCount = count(DB::table($table)->select('*')->whereRaw("slug REGEXP '^{$slug}(-[0-9]+)?$'")->where('id', '<>', $id)->get());
         return ($slugCount > 0) ? "{$slug}-{$slugCount}" : $slug;
     }
 
@@ -32,7 +32,7 @@ class Controller extends BaseController
         $newName = $fileName;
         $counter = 1;
         while (file_exists($newPath)) {
-            $newName = $counter . '-' . $fileName;
+            $newName = $fileName . '-' . $counter;
             $newPath = $path . '/' . $newName;
             $counter++;
         }
