@@ -75,24 +75,24 @@
                         <li><a href="#"><i class="fa fa-list"></i> List of Works</a></li>
                     </ul>
                 </li>
-                <li class="treeview">
+                <li class="treeview {{(Request::segment(2) == 'category' || Request::segment(2) == 'branding' || Request::segment(2) == 'product')? 'active' : '' }}">
                     <a href="">
                         <i class="fa fa-cubes"></i>
-                        <span>Products</span>
+                        <span>Sản phẩm</span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="#"><i class="fa fa-desktop"></i> Overview</a></li>
-                        <li class="treeview">
-                            <a href=""><i class="fa fa-filter"></i> Category</a>
-                            <ul class="treeview-menu">
-                                <li><a href="#>"><i class="fa fa-circle-o"></i> Category I</a></li>
-                                <li><a href="#"><i class="fa fa-circle-o"></i> Category II</a></li>
-                            </ul>
+                        <li class="{{(Request::segment(2) == 'category')? 'active' : '' }}">
+                            <a href="{{ route('category.index') }}"><i class="fa fa-filter"></i> Danh mục</a>
                         </li>
-                        <li><a href="#"><i class="fa fa-list"></i> List of Products</a></li>
+                        <li class="{{(Request::segment(2) == 'branding')? 'active' : '' }}">
+                            <a href="{{ route('branding.index') }}"><i class="fa fa-desktop"></i> Thương hiệu</a>
+                        </li>
+                        <li class="{{(Request::segment(2) == 'product')? 'active' : '' }}">
+                            <a href="{{ route('product.index') }}"><i class="fa fa-list"></i> Danh sách sản phẩm</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="treeview">

@@ -24,25 +24,17 @@ class BrandingController extends Controller
         $branding = Branding::with('category')->where('is_deleted', 0)->paginate(10);
         $keyword = Input::get('search');
         $category_id = Input::get('category_id');
-        if($keyword != ''){
-            $branding = Branding::with('category')
-                            ->where([
-                                ['is_deleted' , 0],
-                                ['name', 'like', '%'.$keyword.'%']
-                            ])->paginate(10);
-            $branding->setPath('branding?search='.$keyword.'&category_id='.$category_id);
-        }
-        if($category_id != ''){
-            $branding = Branding::with('category')
-                            ->where([
-                                ['is_deleted' , 0],
-                                ['category_id', $category_id]
-                            ])->paginate(10);
-            $branding->setPath('branding?search='.$keyword.'&category_id='.$category_id);
-        }
-        
-
-        
+        $branding = Branding::with('category')->whereExists(function($query) use ($keyword, $category_id){
+            $query->where('is_deleted' , 0);
+            if($keyword != ''){
+                $query->where('name', 'like', '%'.$keyword.'%');
+            };
+            if($category_id != ''){
+                $query->where('category_id', $category_id);
+            };
+            
+        })->paginate(10);
+        $branding->setPath('branding?search='.$keyword.'&category_id='.$category_id);
         return view('admin.branding.index', ['branding' => $branding, 'category' => $category, 'keyword' => $keyword, 'category_id' => $category_id]);
     }
 
@@ -65,15 +57,7 @@ class BrandingController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'category_id' => 'required',
-        ],[
-            'name.required' => 'Tiêu đề không được trống',
-            'category_id.required' => 'Danh mục không được trống',
-        ]);
-
-
+        $this->validateRequest($request);
 
         $path = base_path() . '/storage/app/branding/';
         $input = $request->all();
@@ -131,9 +115,8 @@ class BrandingController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validateRequest($request);
         
-
-
         $category = Branding::findOrFail($id);
         $path = base_path() . '/storage/app/branding/';
         $input = $request->all();
@@ -205,6 +188,17 @@ class BrandingController extends Controller
             }
         }
         return response()->json(['success' => $success, 'status' => '200']);
+    }
+
+
+    protected function validateRequest($request){
+        $this->validate($request, [
+            'name' => 'required',
+            'category_id' => 'required',
+        ],[
+            'name.required' => 'Tiêu đề không được trống',
+            'category_id.required' => 'Danh mục không được trống',
+        ]);
     }
 
     
