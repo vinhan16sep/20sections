@@ -12,7 +12,7 @@ class UserController extends Controller
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse $response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function signup(Request $request){
         $this->validate($request, [
@@ -37,7 +37,7 @@ class UserController extends Controller
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse $response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function signin(Request $request){
         $this->validate($request, [
@@ -59,7 +59,8 @@ class UserController extends Controller
         }
 
         return response()->json([
-            'message' => 'Signed in'
+            'message' => 'Signed in',
+            'token' => $token
         ], 200);
     }
 }

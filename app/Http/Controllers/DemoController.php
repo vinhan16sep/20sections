@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Demo;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class DemoController extends Controller
 {
@@ -11,7 +12,18 @@ class DemoController extends Controller
 
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function postDemo(Request $request){
+
+        if(!$user = JWTAuth::parseToken()->authenticate()){
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
+
         $demo = new Demo();
 
         $demo->content = $request->input('content');
