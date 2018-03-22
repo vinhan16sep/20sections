@@ -34,11 +34,9 @@ table.table_product .mask {
     width: 100%;
     height: 100%;
     object-fit: cover; }
-table tr td .category-active {
+table tr td .category-active, .branding-active, .product-active {
     cursor: pointer;
 }
-table tr td .branding-active {
-    cursor: pointer;
-}
+
 
 /*# sourceMappingURL=datatable.css.map */

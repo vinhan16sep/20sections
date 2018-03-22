@@ -69,6 +69,18 @@ Route::group(['middleware' => ['auth:admin']], function () {
             
             /*=====  End of Branding Routes  ======*/
             
+            /*======================================
+            =            Product Routes            =
+            ======================================*/
+            
+            Route::resource('product', 'ProductController');
+            Route::post('product/selectBranding', 'ProductController@selectBranding');
+            Route::post('product/removeImage', 'ProductController@removeImage');
+            Route::post('product/update/{id}', 'ProductController@update')->name('product.update');
+            Route::post('product/remove', 'ProductController@remove');
+            Route::post('product/active', 'ProductController@active');
+            /*=====  End of Product Routes  ======*/
+            
         });
     });
 });

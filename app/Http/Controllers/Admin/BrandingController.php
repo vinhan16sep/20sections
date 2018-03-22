@@ -131,13 +131,7 @@ class BrandingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'category_id' => 'required',
-        ],[
-            'name.required' => 'Tiêu đề không được trống',
-            'category_id.required' => 'Danh mục không được trống',
-        ]);
+        
 
 
         $category = Branding::findOrFail($id);
@@ -212,4 +206,6 @@ class BrandingController extends Controller
         }
         return response()->json(['success' => $success, 'status' => '200']);
     }
+
+    
 }
