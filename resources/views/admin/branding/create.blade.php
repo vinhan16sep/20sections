@@ -20,10 +20,15 @@
                                 @foreach($category as $value)
                                 <option value="{{ $value->id }}">{{ $value->name }}</option>
                                 @endforeach
-                            @else:
+                            @else
                             <option value="">Danh mục hiện dang trống</option>
                             @endif
                         </select>
+                        @if ($errors->has('category_id'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('category_id') }}</strong>
+                            </span>
+                        @endif
                     </div>
     				<div class="form-group">
     					<label for="category_name">Tiêu đề</label>
