@@ -45,3 +45,6 @@ Route::get('/demos', 'DemoController@getDemos');
 Route::put('/demo/{id}', 'DemoController@putDemo');
 Route::delete('/demo/{id}', 'DemoController@deleteDemo');
 
+Route::post('/user', 'UserController@signup');
+Route::post('/user/signin', 'UserController@signin');
+
