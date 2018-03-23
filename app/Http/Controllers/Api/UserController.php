@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Config;
 
 class UserController extends Controller
 {
@@ -33,7 +34,7 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'User created'
-        ], 201);
+        ], Config::get('constants.HTTP_STATUS.CREATED'));
     }
 
     /**
@@ -62,6 +63,6 @@ class UserController extends Controller
         return response()->json([
             'message' => 'Signed in',
             'token' => $token
-        ], 200);
+        ], Config::get('constants.HTTP_STATUS.OK'));
     }
 }
