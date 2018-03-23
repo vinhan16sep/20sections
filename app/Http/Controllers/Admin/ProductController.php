@@ -104,7 +104,8 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        echo $id;
+        $product = Product::with('category', 'branding')->where(['is_deleted' => 0, 'id' => $id])->first();
+        return view('admin.product.detail', ['product' => $product]);
     }
 
     /**
