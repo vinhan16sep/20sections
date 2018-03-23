@@ -58,13 +58,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-        ],[
-            'name.required' => 'Tiêu đề không được trống',
-        ]);
-
-
+        $this->validateRequest($request);
 
         $path = base_path() . '/storage/app/category/';
         $input = $request->all();
@@ -97,7 +91,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        echo $id;
+        //
     }
 
     /**
@@ -121,12 +115,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required',
-        ],[
-            'name.required' => 'Tiêu đề không được trống',
-        ]);
-
+        $this->validateRequest($request);
 
         $category = Category::findOrFail($id);
         $path = base_path() . '/storage/app/category/';
@@ -139,7 +128,7 @@ class CategoryController extends Controller
         $uniqueSlug = $this->buildUniqueSlug('category', $request->id, $slug);
         $newFolderPath = $this->buildNewFolderPath($path, $file);
         $data = ['name' => $input['name'], 'slug' => $uniqueSlug, 'description' => $input['description']];
-        $data['created_at'] =new DateTime();
+        $data['updated_at'] =new DateTime();
         if(Input::file('image')){
             $data['image'] = $newFolderPath[0];
         }
@@ -212,5 +201,13 @@ class CategoryController extends Controller
         }
 
         return array($newName, $newPath);
+    }
+
+    protected function validateRequest($request){
+        $this->validate($request, [
+            'name' => 'required',
+        ],[
+            'name.required' => 'Tiêu đề không được trống',
+        ]);
     }
 }

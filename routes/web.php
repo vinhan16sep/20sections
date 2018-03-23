@@ -46,11 +46,41 @@ Route::prefix('20s-admin')->group(function(){
 Route::group(['middleware' => ['auth:admin']], function () {
     Route::prefix('20s-admin')->group(function(){
         Route::namespace('admin')->group(function () {
+            /*=======================================
+            =            Category Routes            =
+            =======================================*/
+            
             Route::resource('category', 'CategoryController');
             Route::post('category/update/{id}', 'CategoryController@update')->name('category.update');
             Route::post('category/remove', 'CategoryController@remove');
             Route::post('category/active', 'CategoryController@active');
             Route::get('category/{search?}/{page?}', 'CategoryController@index');
+            
+            /*=====  End of Category Routes  ======*/
+            
+            /*=======================================
+            =            Branding Routes            =
+            =======================================*/
+            
+            Route::resource('branding', 'BrandingController');
+            Route::post('branding/update/{id}', 'BrandingController@update')->name('branding.update');
+            Route::post('branding/remove', 'BrandingController@remove');
+            Route::post('branding/active', 'BrandingController@active');
+            
+            /*=====  End of Branding Routes  ======*/
+            
+            /*======================================
+            =            Product Routes            =
+            ======================================*/
+            
+            Route::resource('product', 'ProductController');
+            Route::post('product/selectBranding', 'ProductController@selectBranding');
+            Route::post('product/removeImage', 'ProductController@removeImage');
+            Route::post('product/update/{id}', 'ProductController@update')->name('product.update');
+            Route::post('product/remove', 'ProductController@remove');
+            Route::post('product/active', 'ProductController@active');
+            /*=====  End of Product Routes  ======*/
+            
         });
     });
 });

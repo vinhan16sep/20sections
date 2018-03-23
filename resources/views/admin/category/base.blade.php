@@ -10,9 +10,7 @@
                 <small>Danh sách danh mục</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                <li><a href="#"><i class="fa fa-dashboard"></i> Products</a></li>
-                <li class="active">List of Products</li>
+                <li class="active">Danh Mục</li>
             </ol>
         </section>
         @yield('action-content')

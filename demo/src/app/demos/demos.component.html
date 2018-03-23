@@ -1,0 +1,3 @@
+<button class="btn btn-primary" (click)="onGetDemos()">Get Demos</button>
+<hr>
+<app-demo *ngFor="let demo of demos" [demo]="demo" (demoDeleted)="onDeleted($event)"></app-demo>
