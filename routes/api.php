@@ -32,6 +32,9 @@ Route::prefix('v1')->group(function() {
 
         Route::middleware('auth:api')->post('detail', 'UserController@detail');
         Route::middleware('auth:api')->post('check-role', 'LoginController@checkRole');
+
+        Route::post('/brand-register', 'UserController@brandRegister');
+        Route::post('/brand-login', 'UserController@brandLogin');
     });
 });
 

@@ -3,21 +3,21 @@ import { Http, Response, Headers } from "@angular/http";
 import 'rxjs/Rx';
 import { Observable } from "rxjs";
 
+import { AuthService } from "./auth.service";
+
 @Injectable()
 export class DemoService {
-    constructor(private http: Http) {
+    constructor(private http: Http, private authService: AuthService) {
 
     }
 
     addDemo(content: string) {
-        const body = JSON.stringify({
-            content: content
-        });
-
+        const token = this.authService.getToken();
+        const body = JSON.stringify({content: content});
         const headers = new Headers({
             'Content-Type': 'application/json'
         });
-        return this.http.post('http://localhost/20sections/api/demo', body, {headers: headers});
+        return this.http.post('http://localhost/20sections/api/demo?token=' + token, body, {headers: headers});
     }
 
     getDemos(): Observable<any> {
@@ -30,21 +30,21 @@ export class DemoService {
     }
 
     updateDemo(id: number, newContent: string) {
-        const body = JSON.stringify({
-            content: newContent
-        });
-
+        const token = this.authService.getToken();
+        const body = JSON.stringify({content: newContent});
         const headers = new Headers({
             'Content-Type': 'application/json'
         });
 
-        return this.http.put('http://localhost/20sections/api/demo/' + id, body, {headers: headers})
+        return this.http.put('http://localhost/20sections/api/demo/' + id + '?token=' + token, body, {headers: headers})
             .map(
                 (response: Response) => response.json()
             );
     }
 
     deleteDemo(id: number) {
-        return this.http.delete('http://localhost/20sections/api/demo/' + id);
+        const token = this.authService.getToken();
+
+        return this.http.delete('http://localhost/20sections/api/demo/' + id + '?token=' + token);
     }
 }

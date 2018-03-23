@@ -9,7 +9,11 @@ import { AppComponent } from './app.component';
 import { DemoComponent } from './demo/demo.component';
 import { NewDemoComponent } from './new-demo/new-demo.component';
 import { DemosComponent } from './demos/demos.component';
+import { SignupComponent } from './signup/signup.component';
+import { SigninComponent } from './signin/signin.component';
+
 import { DemoService } from "./demo.service";
+import { AuthService } from "./auth.service";
 
 
 @NgModule({
@@ -17,7 +21,9 @@ import { DemoService } from "./demo.service";
         AppComponent,
         DemoComponent,
         NewDemoComponent,
-        DemosComponent
+        DemosComponent,
+        SignupComponent,
+        SigninComponent
     ],
     imports: [
         BrowserModule,
@@ -25,7 +31,7 @@ import { DemoService } from "./demo.service";
         HttpModule,
         routing
     ],
-    providers: [DemoService],
+    providers: [DemoService, AuthService],
     bootstrap: [AppComponent]
 })
 export class AppModule {
