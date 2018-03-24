@@ -2,6 +2,7 @@
 @section('title', 'Thương hiệu Sản Phẩm')
 @section('content')
     <link rel="stylesheet" href="{{ asset('public/sass/forms.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/sass/admin/overview.css') }}">
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -16,5 +17,7 @@
         @yield('action-content')
         <!-- /.content -->
     </div>
+    <script src="{{ asset('public/lib/chartJs/js/Chart.js') }}"></script>
+    <script src="{{ asset ("public/admin/js/product_chart.js") }}" type="text/javascript"></script>
     <script src="{{ asset ("public/admin/js/product.js") }}" type="text/javascript"></script>
 @endsection
