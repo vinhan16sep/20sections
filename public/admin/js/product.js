@@ -163,5 +163,18 @@ $(document).ready(function(){
               });
           };
       });
-      
+
+    /**
+     *
+     * Active chart
+     *
+     */
+    pieChart('#pieChart', '#pie_chart');
+
+    /**
+     *
+     * Quantity chart
+     *
+     */
+    pieChart('#quantityChart', '#quantity_chart');
 });

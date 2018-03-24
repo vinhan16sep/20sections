@@ -84,13 +84,16 @@
                         </span>
                     </a>
                     <ul class="treeview-menu">
+                        <li class="{{(Request::segment(2) == 'product' && Request::segment(3) == 'over-view')? 'active' : '' }}">
+                            <a href="{{ route('product.overView') }}"><i class="fa fa-desktop"></i> Overview</a>
+                        </li>
                         <li class="{{(Request::segment(2) == 'category')? 'active' : '' }}">
                             <a href="{{ route('category.index') }}"><i class="fa fa-filter"></i> Danh mục</a>
                         </li>
                         <li class="{{(Request::segment(2) == 'branding')? 'active' : '' }}">
                             <a href="{{ route('branding.index') }}"><i class="fa fa-desktop"></i> Thương hiệu</a>
                         </li>
-                        <li class="{{(Request::segment(2) == 'product')? 'active' : '' }}">
+                        <li class="{{(Request::segment(2) == 'product' && Request::segment(3) == '')? 'active' : '' }}">
                             <a href="{{ route('product.index') }}"><i class="fa fa-list"></i> Danh sách sản phẩm</a>
                         </li>
                     </ul>
