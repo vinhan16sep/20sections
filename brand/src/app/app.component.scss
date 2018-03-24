@@ -1,0 +1,38 @@
+@import "./../assets/main";
+
+header{
+    nav{
+        margin-bottom: 0;
+    }
+
+}
+
+footer{
+    background-color: $primary;
+    padding-top: 50px;
+    padding-bottom: 50px;
+
+    nav{
+        text-align: center;
+
+        ul{
+            li{
+                color: #fff;
+
+                a{
+                    color: #fff;
+
+                    &:hover{
+                        color: #fff;
+                    }
+                }
+            }
+        }
+
+    }
+
+    p{
+        text-align: center;
+        color: #fff;
+    }
+}

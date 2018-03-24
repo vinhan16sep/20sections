@@ -1,0 +1,48 @@
+/*
+
+MAIN STYLE for BRAND
+
+Author: hung.luong@matocreative.vn
+
+=== Content ===
+
+1/Varibles
+2/Mixin
+3/Reset Bootstrap
+
+ */
+
+/*
+============= 1/VARIBLES =============
+ */
+
+$primary: #ff7701;
+$primary_hover: #ff851b;
+
+$success: #5cb85c;
+$warning: #f0ad4e;
+$danger: #d9534f;
+$info: #5bc0de;
+
+/* COLOR of TEXT */
+
+$gray-darker: #222;
+$gray-dark: #333;
+$gray: #555;
+$gray-light: #777;
+$gray-lighter: #eee;
+
+/*
+============= 2/MIXIN =============
+ */
+
+
+/*
+============= 3/RESET BOOTSTRAP =============
+ */
+
+a{
+    &:hover{
+        text-decoration: none;
+    }
+}
