@@ -1,0 +1,161 @@
+/*
+
+MAIN STYLE for BRAND
+
+Author: hung.luong@matocreative.vn
+
+=== Content ===
+
+1/Varibles
+2/Mixin
+3/Reset Bootstrap
+
+ */
+/*
+============= 1/VARIBLES =============
+ */
+/* COLOR of TEXT */
+/*
+============= 2/MIXIN =============
+ */
+/*
+============= 3/RESET BOOTSTRAP =============
+ */
+a:hover {
+  text-decoration: none; }
+
+.container-fluid {
+  padding-left: 0;
+  padding-right: 0; }
+
+.banner_lg {
+  position: relative; }
+  .banner_lg .mask {
+    width: 100%;
+    height: 600px;
+    overflow: hidden; }
+    .banner_lg .mask img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; }
+  .banner_lg .banner_wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); }
+    .banner_lg .banner_wrapper .banner_title {
+      width: 50%;
+      margin: 250px auto;
+      padding: 30px;
+      color: #fff;
+      text-align: center; }
+
+.featured .featured_item {
+  text-align: center;
+  padding-top: 30px;
+  padding-bottom: 30px; }
+  .featured .featured_item .mask {
+    width: 160px;
+    height: 160px;
+    overflow: hidden;
+    margin: auto;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%; }
+    .featured .featured_item .mask img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; }
+
+.signUp .signUp_box .signUp_content {
+  padding: 40px 30px;
+  background-color: #ff7701;
+  color: #fff;
+  position: relative; }
+  .signUp .signUp_box .signUp_content .btn_outline {
+    border: 3px solid #fff;
+    background-color: transparent; }
+    .signUp .signUp_box .signUp_content .btn_outline:hover {
+      background-color: #fff;
+      color: #ff7701; }
+  .signUp .signUp_box .signUp_content .signUp_side {
+    width: calc(100% + 30px);
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 100%; }
+    .signUp .signUp_box .signUp_content .signUp_side .mask {
+      width: 100%;
+      height: 100%;
+      overflow: hidden; }
+      .signUp .signUp_box .signUp_content .signUp_side .mask img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; }
+
+.partners .partners_item {
+  text-align: center;
+  padding-top: 30px;
+  padding-bottom: 30px; }
+  .partners .partners_item .mask {
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    margin: auto;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%; }
+    .partners .partners_item .mask img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; }
+
+.get_started_wrapper {
+  padding-left: 0;
+  padding-right: 0;
+  height: 400px; }
+  .get_started_wrapper .mask {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative; }
+    .get_started_wrapper .mask img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; }
+    .get_started_wrapper .mask .get_started {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.5); }
+    .get_started_wrapper .mask .get_started_title {
+      width: 50%;
+      margin: 100px auto;
+      padding: 30px;
+      color: #fff;
+      text-align: center; }
+      .get_started_wrapper .mask .get_started_title .btn_outline {
+        border: 3px solid #fff;
+        background-color: transparent; }
+        .get_started_wrapper .mask .get_started_title .btn_outline:hover {
+          background-color: #fff;
+          color: #ff7701; }
+
+.heading_title {
+  display: block;
+  text-align: center;
+  margin-bottom: 30px; }
+  .heading_title p {
+    width: 60%;
+    margin: auto;
+    color: #6e6e6e; }
+
+.row {
+  margin-top: 50px;
+  margin-bottom: 50px; }
+
+/*# sourceMappingURL=home.component.css.map */

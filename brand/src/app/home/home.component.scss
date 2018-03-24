@@ -1,0 +1,213 @@
+@import "./../../assets/main";
+
+.container-fluid{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.banner_lg{
+    position: relative;
+
+    .mask{
+        width: 100%;
+        height: 600px;
+        overflow: hidden;
+
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .banner_wrapper{
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+
+        background-color: rgba(0,0,0,.5);
+
+        .banner_title{
+            width: 50%;
+            margin: 250px auto;
+            padding:30px;
+
+            color: #fff;
+
+            text-align: center;
+        }
+    }
+}
+
+.featured{
+    .featured_item{
+        text-align: center;
+
+        padding-top: 30px;
+        padding-bottom: 30px;
+
+        .mask{
+            width: 160px;
+            height: 160px;
+            overflow: hidden;
+            margin: auto;
+
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+
+            img{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+    }
+}
+
+.signUp{
+    .signUp_box{
+        .signUp_content{
+            padding: 40px 30px;
+
+            background-color: $primary;
+            color: #fff;
+
+            position: relative;
+
+            .btn_outline{
+                border: 3px solid #fff;
+                background-color: transparent;
+
+                &:hover{
+                    background-color: #fff;
+                    color: $primary;
+                }
+            }
+
+            .signUp_side{
+                width: calc(100% + 30px);
+                height: 100%;
+
+                position: absolute;
+                top: 0;
+                left: 100%;
+
+                .mask{
+                    width: 100%;
+                    height: 100%;
+                    overflow: hidden;
+
+                    img{
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+.partners{
+    .partners_item{
+        text-align: center;
+
+        padding-top: 30px;
+        padding-bottom: 30px;
+
+        .mask{
+            width: 80px;
+            height: 80px;
+            overflow: hidden;
+            margin: auto;
+
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+
+            img{
+                width:100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+}
+
+.get_started_wrapper{
+    padding-left: 0;
+    padding-right: 0;
+
+    height: 400px;
+
+    .mask{
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+
+        position: relative;
+
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .get_started{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            background-color: rgba(0,0,0,.5);
+        }
+
+        .get_started_title{
+            width: 50%;
+            margin: 100px auto;
+            padding:30px;
+
+            color: #fff;
+
+            text-align: center;
+
+            .btn_outline{
+                border: 3px solid #fff;
+                background-color: transparent;
+
+                &:hover{
+                    background-color: #fff;
+                    color: $primary;
+                }
+            }
+        }
+    }
+}
+
+.heading_title{
+    display: block;
+    text-align: center;
+    margin-bottom: 30px;
+
+    h1{
+
+    }
+
+    p{
+        width: 60%;
+        margin: auto;
+        color: #6e6e6e;
+    }
+}
+
+.row{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
