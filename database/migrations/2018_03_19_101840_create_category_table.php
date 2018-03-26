@@ -17,7 +17,12 @@ class CreateCategoryTable extends Migration
             $table->increments('id');
             $table->string('name', 255);
             $table->string('slug', 255);
+            $table->text('image');
+            $table->text('description');
             $table->tinyInteger('is_deleted');
+            $table->tinyInteger('is_activated');
+            $table->string('created_by', 255);
+            $table->string('updated_by', 255);
             $table->timestamps();
         });
     }
