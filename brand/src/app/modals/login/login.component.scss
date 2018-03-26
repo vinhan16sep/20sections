@@ -1,0 +1,35 @@
+@import "./../../../assets/main";
+
+a{
+    color: #fff;
+    padding: .5rem 1rem;
+    display: block;
+
+    &:hover{
+        color: $primary;
+    }
+}
+
+.modal-header{
+    background-color: $primary;
+    color: #fff;
+
+    button{
+        color: rgba(255,255,255, .5);
+
+        &:hover{
+            color: rgba(255,255,255, 1);
+        }
+    }
+}
+
+.modal-body{
+    button.btn-primary{
+        background-color: $primary;
+        border: none;
+
+        &:hover{
+            background-color: $primary_hover;
+        }
+    }
+}
