@@ -22,6 +22,8 @@ class CreateBrandingTable extends Migration
             $table->text('description');
             $table->tinyInteger('is_activated');
             $table->tinyInteger('is_deleted');
+            $table->string('created_by', 255);
+            $table->string('updated_by', 255);
             $table->timestamps();
         });
     }

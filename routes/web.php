@@ -92,6 +92,16 @@ Route::group(['middleware' => ['auth:admin']], function () {
             Route::post('register', 'ModeratorController@register')->name('mod.register');
             
             /*=====  End of Register Mod Routes  ======*/
+
+            /*====================================
+            =            Brand Routes            =
+            ====================================*/
+            
+            Route::get('brand/register', 'BrandController@showRegisterForm');
+            Route::post('brand/register', 'BrandController@brandRegister')->name('brand.register');
+            
+            /*=====  End of Brand Routes  ======*/
+            
             
         });
     });

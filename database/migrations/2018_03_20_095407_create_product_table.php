@@ -32,6 +32,8 @@ class CreateProductTable extends Migration
             $table->text('content');
             $table->tinyInteger('is_activated');
             $table->tinyInteger('is_deleted');
+            $table->string('created_by', 255);
+            $table->string('updated_by', 255);
             $table->timestamps();
         });
     }
