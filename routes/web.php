@@ -83,6 +83,16 @@ Route::group(['middleware' => ['auth:admin']], function () {
 
             /*=====  End of Product Routes  ======*/
             
+
+            /*===========================================
+            =            Register Mod Routes            =
+            ===========================================*/
+            
+            Route::get('register', 'ModeratorController@showRegisterForm');
+            Route::post('register', 'ModeratorController@register')->name('mod.register');
+            
+            /*=====  End of Register Mod Routes  ======*/
+            
         });
     });
 });
