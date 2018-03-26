@@ -10,13 +10,11 @@ class Branding extends Model
 
     protected $guarded = [];
 
-    public function category()
-    {
+    public function category(){
         return $this->belongsTo('App\Category');
     }
 
-    public function product()
-    {
+    public function product(){
         return $this->hasMany('App\Product');
     }
 }

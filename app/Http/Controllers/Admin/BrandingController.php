@@ -2,40 +2,58 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\BrandingRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Auth;
 use App\Branding;
 use File;
 use DateTime;
 
+use App\Repositories\Eloquents\OrmBrandingRepository;
+use App\Repositories\Db\DbBrandingRepository;
+
 class BrandingController extends Controller
 {
+
+    /**
+     * @var OrmBrandingRepository
+     */
+    protected $ormBrandingRepository;
+
+    /**
+     * @var DbBrandingRepository
+     */
+    protected $dbBrandingRepository;
+
+    /**
+     * BrandingController constructor.
+     */
+    public function __construct(OrmBrandingRepository $ormBrandingRepository, DbBrandingRepository $dbBrandingRepository){
+        $this->middleware('auth:admin');
+
+        $this->ormBrandingRepository = $ormBrandingRepository;
+        $this->dbBrandingRepository = $dbBrandingRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(){
         $category = DB::table('category')->get();
-        $branding = Branding::with('category')->where('is_deleted', 0)->paginate(10);
-        $keyword = Input::get('search');
-        $category_id = Input::get('category_id');
-        $branding = Branding::with('category')->whereExists(function($query) use ($keyword, $category_id){
-            $query->where('is_deleted' , 0);
-            if($keyword != ''){
-                $query->where('name', 'like', '%'.$keyword.'%');
-            };
-            if($category_id != ''){
-                $query->where('category_id', $category_id);
-            };
-            
-        })->paginate(10);
-        $branding->setPath('branding?search='.$keyword.'&category_id='.$category_id);
-        return view('admin.branding.index', ['branding' => $branding, 'category' => $category, 'keyword' => $keyword, 'category_id' => $category_id]);
+
+        $searchCriteria = [
+            'name' => Input::get('search'),
+            'category_id' => Input::get('category_id')
+        ];
+
+        $branding = $this->ormBrandingRepository->fetchAllWithPagination(10, $searchCriteria);
+
+        $branding->setPath('branding?search=' . $searchCriteria['name'] . '&category_id=' . $searchCriteria['category_id']);
+        return view('admin.branding.index', ['branding' => $branding, 'category' => $category, 'keyword' => $searchCriteria['name'], 'category_id' => $searchCriteria['category_id']]);
     }
 
     /**
@@ -43,22 +61,16 @@ class BrandingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create(){
         $category = DB::table('category')->get();
         return view('admin.branding.create', ['category' => $category]);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param BrandingRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
-    {
-        $this->validateRequest($request);
-
+    public function store(BrandingRequest $request){
         $path = base_path() . '/storage/app/branding/';
         $input = $request->all();
         $slug = str_slug($request->input('name'));
@@ -69,7 +81,6 @@ class BrandingController extends Controller
         }
         $newFolderPath = $this->buildNewFolderPath($path, $file);
         $data =  ['name' => $input['name'], 'slug' => $uniqueSlug, 'description' => $input['description'], 'category_id' => $input['category_id']];
-        // File::makeDirectory($newFolderPath[1], 0777, true, true);
         if(Input::file('image')){
             $data['image'] = $newFolderPath[0];
         }
@@ -88,8 +99,7 @@ class BrandingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id){
         //
     }
 
@@ -99,24 +109,18 @@ class BrandingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id){
         $category = DB::table('category')->get();
         $branding = Branding::with('category')->where(['is_deleted'=> 0, 'id' => $id])->first();
         return view('admin.branding.edit', ['branding' => $branding, 'category' => $category]);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param BrandingRequest $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
-    {
-        $this->validateRequest($request);
-        
+    public function update(BrandingRequest $request, $id){
         $category = Branding::findOrFail($id);
         $path = base_path() . '/storage/app/branding/';
         $input = $request->all();
@@ -147,13 +151,15 @@ class BrandingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id){
         //
     }
 
-    public function remove(Request $request)
-    {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function remove(Request $request){
         $id = $request->id;
         $branding = Branding::findOrFail($id);
         $success = false;
@@ -165,11 +171,14 @@ class BrandingController extends Controller
                 $success = true;
             }
         }
-        return response()->json(['success' => $success, 'status' => '200']); 
+        return response()->json(['success' => $success, 'status' => '200']);
     }
 
-    public function active(Request $request)
-    {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function active(Request $request){
         $id = $request->id;
         $branding = Branding::findOrFail($id);
         $success = false;
@@ -189,17 +198,4 @@ class BrandingController extends Controller
         }
         return response()->json(['success' => $success, 'status' => '200']);
     }
-
-
-    protected function validateRequest($request){
-        $this->validate($request, [
-            'name' => 'required',
-            'category_id' => 'required',
-        ],[
-            'name.required' => 'Tiêu đề không được trống',
-            'category_id.required' => 'Danh mục không được trống',
-        ]);
-    }
-
-    
 }

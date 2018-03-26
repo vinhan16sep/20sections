@@ -14,7 +14,7 @@
     				<!-- form start -->
                     <div class="form-group"> <!-- Split the columns due to numbers of level of Category -->
                         <label for="products_category_1">Danh mục</label>
-                        <select name="category_id" class="form-control" id="products_category">
+                        <select name="category_id" class="form-control" id="products_category" autofocus>
                             @if($category)
                             <option value="">Chọn danh mục</option>
                                 @foreach($category as $value)
@@ -32,7 +32,7 @@
                     </div>
     				<div class="form-group">
     					<label for="category_name">Tiêu đề</label>
-    					<input type="text" name="name" value="{{ old('name') }}" class="form-control" id="branding_name"  autofocus required>
+    					<input type="text" name="name" value="{{ old('name') }}" class="form-control" id="branding_name" required>
                         @if ($errors->has('name'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('name') }}</strong>
