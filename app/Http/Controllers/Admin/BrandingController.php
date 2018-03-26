@@ -16,7 +16,6 @@ use App\Repositories\Db\DbBrandingRepository;
 
 class BrandingController extends Controller
 {
-
     /**
      * @var OrmBrandingRepository
      */
