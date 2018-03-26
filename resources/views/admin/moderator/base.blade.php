@@ -7,11 +7,11 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Sản Phẩm
-                <small>Danh sách sản phẩm</small>
+                Đăng ký thành viên Mod
+                {{-- <small>Danh sách sản phẩm</small> --}}
             </h1>
             <ol class="breadcrumb">
-                <li class="active">Sản Phẩm</li>
+                <li class="active">Đăng ký</li>
             </ol>
         </section>
         @yield('action-content')

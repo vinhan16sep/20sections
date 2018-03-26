@@ -27,6 +27,8 @@ class ProductController extends Controller
         $category_id = Input::get('category_id');
         $branding_id = Input::get('branding_id');
 
+        
+        // print_r($chart);die;
         $product = Product::with('category', 'branding')->whereExists(function($query) use ($keyword, $category_id, $branding_id){
             $query->where('is_deleted' , 0);
             if($keyword != ''){
@@ -46,7 +48,7 @@ class ProductController extends Controller
                         'product' => $product,
                         'keyword' => $keyword,
                         'category_id' => $category_id,
-                        'branding_id' => $branding_id,
+                        'branding_id' => $branding_id
                     ]);
     }
 
@@ -175,6 +177,46 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function overView()
+    {
+        /**
+         *
+         * Product active and deactive
+         *
+         */
+        $active = Product::where(['is_deleted' => 0, 'is_activated' => 0])->count();
+        $deactive = Product::where(['is_deleted' => 0, 'is_activated' => 1])->count();
+        $pieChart = [
+                ['value' => $active, 'highlight' => '#00a65a', 'color' => '#00a65a', 'label' => 'Đang sử dụng'],
+                ['value' => $deactive, 'highlight' => '#f56954', 'color' => '#f39c12', 'label' =>  'Không sử dụng']
+                ];
+        $pieChart = json_encode($pieChart);
+
+        /**
+         *
+         * In stock and out of stock
+         *
+         */
+        $inStock = Product::where([['is_deleted', 0], ['quantity', '!=', 0]])->count();
+        $outOfStock = Product::where([['is_deleted', 0], ['quantity', '=', 0]])->count();
+        
+        $quantityChart = [
+                ['value' => $inStock, 'highlight' => '#00a65a', 'color' => '#00a65a', 'label' => 'Còn hàng'],
+                ['value' => $outOfStock, 'highlight' => '#f56954', 'color' => '#f00', 'label' =>  'Hết hàng']
+                ];
+        $quantityChart = json_encode($quantityChart);
+
+        /**
+         *
+         * Category
+         *
+         */
+        // $category = DB::table('category')->where('is_deleted', 0)->get();
+        // print_r($category);die;
+
+        return view('admin.product.overView', ['pieChart' => $pieChart, 'quantityChart' => $quantityChart]);
     }
 
     public function selectBranding(Request $request)

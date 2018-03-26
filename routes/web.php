@@ -73,13 +73,25 @@ Route::group(['middleware' => ['auth:admin']], function () {
             =            Product Routes            =
             ======================================*/
             
+            Route::get('product/over-view', 'ProductController@overView')->name('product.overView');
             Route::resource('product', 'ProductController');
             Route::post('product/selectBranding', 'ProductController@selectBranding');
             Route::post('product/removeImage', 'ProductController@removeImage');
             Route::post('product/update/{id}', 'ProductController@update')->name('product.update');
             Route::post('product/remove', 'ProductController@remove');
             Route::post('product/active', 'ProductController@active');
+
             /*=====  End of Product Routes  ======*/
+            
+
+            /*===========================================
+            =            Register Mod Routes            =
+            ===========================================*/
+            
+            Route::get('register', 'ModeratorController@showRegisterForm');
+            Route::post('register', 'ModeratorController@register')->name('mod.register');
+            
+            /*=====  End of Register Mod Routes  ======*/
             
         });
     });

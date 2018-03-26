@@ -8,48 +8,63 @@
     <!-- Small boxes (Stat box) -->
     <div class="row">
         <div class="col-md-12">
-            <div class="box">
+            
+            <div class="box {{ ($keyword != '' || $branding_id != '' || $category_id != '')? '' : 'collapsed-box' }} box-danger">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Thêm mới và tìm kiếm sản phẩm</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    {{-- <div class="col-md-3">
+                        <a href="{{ route('product.create') }}" class="btn btn-primary" role="button">Thêm sản phẩm</a>
+                    </div> --}}
+                    <div class="row">
+                        <form action="{{ route('product.index') }}" method="get">
+                        @csrf
+                        <div class="col-md-4">
+                            <select name="category_id" class="input-group form-control" id="products_category">
+                                @if($category)
+                                <option value="">Chọn danh mục</option>
+                                @foreach($category as $key => $value)
+                                <option value="{{ $value->id }}" {{ ($value->id == $category_id)? 'selected' : '' }} >{{ $value->name }}</option>
+                                @endforeach
+                                @else:
+                                <option value="">Danh mục hiện dang trống</option>
+                                @endif
+                            </select>
+                        </div>
+
+                        <div class="col-md-4" class="products_branding">
+                            <select name="branding_id" class="input-group form-control" id="products_branding">
+                                <option value="">Chọn thương hiệu (Chọn danh mục trước)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Tìm kiếm ..." name="search" value="{{ $keyword }}">
+                                <span class="input-group-btn">
+                                    <input type="submit" class="btn btn-block btn-primary" value="Tìm kiếm">
+                                </span>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                    
+                    <input type="hidden" name="products_branding_id" value="{{ $branding_id }}">
+                </div>
+            </div>
+            <div class="box box-danger">
                 <div class="box-header">
                     <h3 class="box-title">SẢN PHẨM</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <a href="{{ route('product.create') }}" class="btn btn-primary" role="button">Thêm sản phẩm</a>
-                        </div>
-                        <form action="{{ route('product.index') }}" method="get">
-                            @csrf
-                            <div class="col-md-3">
-                                <select name="category_id" class="input-group form-control" id="products_category">
-                                    @if($category)
-                                    <option value="">Chọn danh mục</option>
-                                    @foreach($category as $key => $value)
-                                    <option value="{{ $value->id }}" {{ ($value->id == $category_id)? 'selected' : '' }} >{{ $value->name }}</option>
-                                    @endforeach
-                                    @else:
-                                    <option value="">Danh mục hiện dang trống</option>
-                                    @endif
-                                </select>
-                            </div>
-
-                            <div class="col-md-3" class="products_branding">
-                                <select name="branding_id" class="input-group form-control" id="products_branding">
-                                    <option value="">Chọn thương hiệu (Chọn danh mục trước)</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Tìm kiếm ..." name="search" value="{{ $keyword }}">
-                                    <span class="input-group-btn">
-                                        <input type="submit" class="btn btn-block btn-primary" value="Tìm kiếm">
-                                    </span>
-                                </div>
-                            </div>
-                        </form>
-                        <input type="hidden" name="products_branding_id" value="{{ $branding_id }}">
-                    </div>
-                    
+                    <a href="{{ route('product.create') }}" class="btn btn-primary" role="button">Thêm sản phẩm</a>
                     <div class="table-responsive">
                         <table id="table" class="table table_product">
                             <thead>
@@ -57,7 +72,6 @@
                                 <th>No.</th>
                                 <th>Hình ảnh</th>
                                 <th>Tên sản phẩm</th>
-                                <th>Giới thiệu</th>
                                 <th>Danh mục</th>
                                 <th>Thương hiệu</th>
                                 <th>Số lượng</th>
@@ -86,7 +100,6 @@
                                         </div>
                                     </td>
                                     <td><a href="{{ route('product.show', ['id' => $value['id']]) }}">{{ $value['name'] }}</a></td>
-                                    <td>{{ $value['description'] }}</td>
                                     <td>{{ $value['category']['name'] }}</td>
                                     <td>{{ $value['branding']['name'] }}</td>
                                     <td>{{ $value['quantity'] }}</td>
@@ -114,15 +127,14 @@
                             <tfoot>
                             <tr>
                                 <th>No.</th>
-                                <th>Image</th>
-                                <th>Product</th>
-                                <th>Description</th>
-                                <th>Detail</th>
-                                <th>Category</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <th>Hình ảnh</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Danh mục</th>
+                                <th>Thương hiệu</th>
+                                <th>Số lượng</th>
+                                <th>Giá</th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
                             </tr>
                             </tfoot>
                         </table>
@@ -133,12 +145,10 @@
             </div>
             <!-- /.box -->
         </div>
-        <!-- /.col -->
+        <!-- /.col --> 
+        
     </div>
     <!-- /.row -->
     <!-- END ACCORDION & CAROUSEL-->
 </section>
-<script type="text/javascript">
-    
-</script>
 @endsection
