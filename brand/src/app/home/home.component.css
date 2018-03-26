@@ -28,35 +28,35 @@ a:hover {
   padding-left: 0;
   padding-right: 0; }
 
-.banner_lg {
+.banner-lg {
   position: relative; }
-  .banner_lg .mask {
+  .banner-lg .mask {
     width: 100%;
     height: 600px;
     overflow: hidden; }
-    .banner_lg .mask img {
+    .banner-lg .mask img {
       width: 100%;
       height: 100%;
       object-fit: cover; }
-  .banner_lg .banner_wrapper {
+  .banner-lg .banner-wrapper {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5); }
-    .banner_lg .banner_wrapper .banner_title {
+    .banner-lg .banner-wrapper .banner-title {
       width: 50%;
       margin: 250px auto;
       padding: 30px;
       color: #fff;
       text-align: center; }
 
-.featured .featured_item {
+.featured .featured-item {
   text-align: center;
   padding-top: 30px;
   padding-bottom: 30px; }
-  .featured .featured_item .mask {
+  .featured .featured-item .mask {
     width: 160px;
     height: 160px;
     overflow: hidden;
@@ -64,42 +64,43 @@ a:hover {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%; }
-    .featured .featured_item .mask img {
+    .featured .featured-item .mask img {
       width: 100%;
       height: 100%;
       object-fit: cover; }
 
-.signUp .signUp_box .signUp_content {
+.signUp .signUp-box .signUp-content {
   padding: 40px 30px;
   background-color: #ff7701;
   color: #fff;
   position: relative; }
-  .signUp .signUp_box .signUp_content .btn_outline {
+  .signUp .signUp-box .signUp-content .btn-outline {
     border: 3px solid #fff;
-    background-color: transparent; }
-    .signUp .signUp_box .signUp_content .btn_outline:hover {
+    background-color: transparent;
+    color: #fff; }
+    .signUp .signUp-box .signUp-content .btn-outline:hover {
       background-color: #fff;
       color: #ff7701; }
-  .signUp .signUp_box .signUp_content .signUp_side {
+  .signUp .signUp-box .signUp-content .signUp-side {
     width: calc(100% + 30px);
     height: 100%;
     position: absolute;
     top: 0;
     left: 100%; }
-    .signUp .signUp_box .signUp_content .signUp_side .mask {
+    .signUp .signUp-box .signUp-content .signUp-side .mask {
       width: 100%;
       height: 100%;
       overflow: hidden; }
-      .signUp .signUp_box .signUp_content .signUp_side .mask img {
+      .signUp .signUp-box .signUp-content .signUp-side .mask img {
         width: 100%;
         height: 100%;
         object-fit: cover; }
 
-.partners .partners_item {
+.partners .partners-item {
   text-align: center;
   padding-top: 30px;
   padding-bottom: 30px; }
-  .partners .partners_item .mask {
+  .partners .partners-item .mask {
     width: 80px;
     height: 80px;
     overflow: hidden;
@@ -107,55 +108,56 @@ a:hover {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%; }
-    .partners .partners_item .mask img {
+    .partners .partners-item .mask img {
       width: 100%;
       height: 100%;
       object-fit: cover; }
 
-.get_started_wrapper {
+.get-started-wrapper {
   padding-left: 0;
   padding-right: 0;
   height: 400px; }
-  .get_started_wrapper .mask {
+  .get-started-wrapper .mask {
     width: 100%;
     height: 100%;
     overflow: hidden;
     position: relative; }
-    .get_started_wrapper .mask img {
+    .get-started-wrapper .mask img {
       width: 100%;
       height: 100%;
       object-fit: cover; }
-    .get_started_wrapper .mask .get_started {
+    .get-started-wrapper .mask .get-started {
       width: 100%;
       height: 100%;
       position: absolute;
       top: 0;
       left: 0;
       background-color: rgba(0, 0, 0, 0.5); }
-    .get_started_wrapper .mask .get_started_title {
+    .get-started-wrapper .mask .get-started-title {
       width: 50%;
       margin: 100px auto;
       padding: 30px;
       color: #fff;
       text-align: center; }
-      .get_started_wrapper .mask .get_started_title .btn_outline {
+      .get-started-wrapper .mask .get-started-title .btn-outline {
         border: 3px solid #fff;
-        background-color: transparent; }
-        .get_started_wrapper .mask .get_started_title .btn_outline:hover {
+        background-color: transparent;
+        color: #fff; }
+        .get-started-wrapper .mask .get-started-title .btn-outline:hover {
           background-color: #fff;
           color: #ff7701; }
 
-.heading_title {
+.heading-title {
   display: block;
   text-align: center;
   margin-bottom: 30px; }
-  .heading_title p {
+  .heading-title p {
     width: 60%;
     margin: auto;
     color: #6e6e6e; }
 
 .row {
-  margin-top: 50px;
-  margin-bottom: 50px; }
+  padding-top: 70px;
+  padding-bottom: 70px; }
 
 /*# sourceMappingURL=home.component.css.map */

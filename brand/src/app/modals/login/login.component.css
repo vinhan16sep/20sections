@@ -1,0 +1,48 @@
+/*
+
+MAIN STYLE for BRAND
+
+Author: hung.luong@matocreative.vn
+
+=== Content ===
+
+1/Varibles
+2/Mixin
+3/Reset Bootstrap
+
+ */
+/*
+============= 1/VARIBLES =============
+ */
+/* COLOR of TEXT */
+/*
+============= 2/MIXIN =============
+ */
+/*
+============= 3/RESET BOOTSTRAP =============
+ */
+a:hover {
+  text-decoration: none; }
+
+a {
+  color: #fff;
+  padding: .5rem 1rem;
+  display: block; }
+  a:hover {
+    color: #ff7701; }
+
+.modal-header {
+  background-color: #ff7701;
+  color: #fff; }
+  .modal-header button {
+    color: rgba(255, 255, 255, 0.5); }
+    .modal-header button:hover {
+      color: white; }
+
+.modal-body button.btn-primary {
+  background-color: #ff7701;
+  border: none; }
+  .modal-body button.btn-primary:hover {
+    background-color: #ff851b; }
+
+/*# sourceMappingURL=login.component.css.map */
