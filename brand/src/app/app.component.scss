@@ -1,8 +1,39 @@
 @import "./../assets/main";
 
 header{
+
     nav{
         margin-bottom: 0;
+        background-color: $primary;
+
+        li.nav-item{
+            a{
+                display: block;
+                padding: .5rem 1rem;
+                color: rgba(255,255,255, .5);
+
+                &:hover{
+                    color: rgba(255,255,255,1);
+                }
+            }
+
+            &.active{
+                a{
+                    color: rgba(255,255,255, 1);
+                }
+            }
+
+            .btn-outline{
+                border: 3px solid #fff;
+                background-color: transparent;
+                color: #fff;
+
+                &:hover{
+                    background-color: #fff;
+                    color: $primary;
+                }
+            }
+        }
     }
 
 }
