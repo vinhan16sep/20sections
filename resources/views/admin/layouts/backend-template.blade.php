@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="{{ asset('public/lib/fontAwesome/css/font-awesome.min.css') }}">
     <!-- Ionicons -->
     <link rel="stylesheet" href="{{ asset('public/lib/ionicons/css/ionicons.min.css') }}">
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="{{ asset ("public/bower_components/bootstrap-daterangepicker/daterangepicker.css") }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('public/lib/dist/css/AdminLTE.css') }}">
     <!-- AdminLTE Skins. Choose a skin from the css/skins

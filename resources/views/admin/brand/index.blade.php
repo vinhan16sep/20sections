@@ -1,95 +1,130 @@
 @extends('admin.brand.base')
 @section('action-content')
-	<div class="container">
-		<div class="row">
-			<div class="col-md-8">
-				<div class="box">
-					<div class="box-header">
-						<h3 class="box-title">Đăng ký Brand</h3>
-					</div>
-					<div class="box-body">
-						<form method="POST" action="{{ route('brand.register') }}">
-							@csrf
-							@if(Session::has('message'))
-								<p class="alert alert-info">{{ Session::get('message') }}</p>
-							@endif
-							<div class="form-group row">
-								<label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Họ Tên') }}</label>
+    <!-- Main content -->
+    <section class="content">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-md-12">
 
-								<div class="col-md-6">
-									<input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Thêm mới và tìm kiếm sản phẩm</h3>
 
-									@if ($errors->has('name'))
-									<span class="invalid-feedback">
-										<strong>{{ $errors->first('name') }}</strong>
-									</span>
-									@endif
-								</div>
-							</div>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <form action="{{ route('brand.index') }}" method="get">
+                                @csrf
+                                <div class="col-md-4">
+                                    <div class="form-group">
 
-							<div class="form-group row">
-								<label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Đại chỉ E-Mail') }}</label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input name="search_date" type="text" class="form-control pull-right" id="reservation" value="{{ $dateRange }}">
+                                        </div>
+                                        <!-- /.input group -->
+                                    </div>
+                                    <!-- /.form group -->
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Tìm kiếm ..." name="search" value="{{ $keyword }}">
+                                        <span class="input-group-btn">
+                                    <input type="submit" class="btn btn-block btn-primary" value="Tìm kiếm">
+                                </span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
 
-								<div class="col-md-6">
-									<input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
+                    </div>
+                </div>
+                <div class="box box-danger">
+                    <div class="box-header">
+                        <h3 class="box-title">SẢN PHẨM</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <a href="{{ route('product.create') }}" class="btn btn-primary" role="button">Thêm sản phẩm</a>
+                        <div class="table-responsive">
+                            <table id="table" class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Họ tên</th>
+                                    <th>Email</th>
+                                    <th>Chi tiết</th>
+                                    <th>Hành động</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @if($brand)
+                                    @foreach($brand as $key => $value)
+                                        <tr>
+                                            <td>1</td>
+                                            <td><a href="#">{{ $value['name'] }}</a></td>
+                                            <td>{{ $value['email'] }}</td>
+                                            <td>
+                                                <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#collapse_{{ $value['id'] }}" aria-expanded="true" aria-controls="collapse_1">Xem chi tiết</button>
+                                            </td>
+                                            <td>
+                                                <a href="#" class="dataActionDelete category-remove" data-id="{{ $value['id'] }}"><i class="fa fa-remove" aria-hidden="true"></i> </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="10">
+                                                <div class="collapse" id="collapse_{{ $value['id'] }}" aria-expanded="false" style="height: 0px;">
+                                                    <div class="well">
+                                                        <table class="table">
+                                                            <thead>
+                                                            <tr>
+                                                                <th width="30%">Người tạo</th>
+                                                                <th>Ngày tạo</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td>{{ $value['created_by'] }}</td>
+                                                                <td>{{ $value['created_at'] }}</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>Chưa có Brand</tr>
+                                @endif
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Họ tên</th>
+                                    <th>Email</th>
+                                    <th>Chi tiết</th>
+                                    <th>Hành động</th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
 
-									@if ($errors->has('email'))
-									<span class="invalid-feedback">
-										<strong>{{ $errors->first('email') }}</strong>
-									</span>
-									@endif
-								</div>
-							</div>
-
-							<div class="form-group row">
-								<label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Mật khẩu') }}</label>
-
-								<div class="col-md-6">
-									<input id="password" type="text" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }} generate_password" name="password" required>
-									<input type="button" class="button" value="Tạo mật khẩu" id="generate">
-									@if ($errors->has('password'))
-									<span class="invalid-feedback">
-										<strong>{{ $errors->first('password') }}</strong>
-									</span>
-									@endif
-								</div>
-							</div>
-
-							<div class="form-group row">
-								<label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Xác nhận mật khẩu') }}</label>
-
-								<div class="col-md-6">
-									<input id="password-confirm" type="text" class="form-control generate_password" name="password_confirmation" required>
-								</div>
-							</div>
-
-							<div class="form-group row mb-0">
-								<div class="col-md-6 offset-md-4">
-									<button type="submit" class="btn btn-primary">
-										{{ __('Đăng ký') }}
-									</button>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<script type="text/javascript">
-	function randomPassword(length) {
-	    var chars = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+<>ABCDEFGHIJKLMNOP1234567890";
-	    var pass = "";
-	    for (var x = 0; x < length; x++) {
-	        var i = Math.floor(Math.random() * chars.length);
-	        pass += chars.charAt(i);
-	    }
-	    return pass;
-	}
-
-	$('#generate').click(function(){
-		var generate = randomPassword(8);
-		$('.generate_password').val(generate);
-	})
-</script>
+        </div>
+        <!-- /.row -->
+        <!-- END ACCORDION & CAROUSEL-->
+    </section>
 @endsection

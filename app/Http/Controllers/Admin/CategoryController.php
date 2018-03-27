@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
-use App\Category;
 use File;
 use DateTime;
+
+use App\Repositories\Eloquents\OrmCategoryRepository;
+use App\Repositories\Db\DBCategoryRepository;
 
 class CategoryController extends Controller
 {
@@ -17,26 +20,29 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct()
+
+    /**
+     * @var OrmCategoryRepository
+     */
+    protected $ormCategoryRepository;
+    /**
+     * @var DBCategoryRepository
+     */
+    protected $dbCategoryRepository;
+
+    public function __construct(OrmCategoryRepository $ormCategoryRepository, DBCategoryRepository $dbCategoryRepository)
     {
         $this->middleware('auth:admin');
+
+        $this->ormCategoryRepository = $ormCategoryRepository;
+        $this->dbCategoryRepository = $dbCategoryRepository;
     }
 
     public function index()
     {
-        $category = DB::table('category')->where('is_deleted', 0)->paginate(10);
         $keyword = Input::get('search');
-        if($keyword != ''){
-            $category = DB::table('category')
-                            ->where([
-                                ['is_deleted' , 0],
-                                ['name', 'like', '%'.$keyword.'%']
-                            ])->paginate(1);
-            $category->setPath('category?search='.$keyword);
-        }
-        
-
-        
+        $category = $this->ormCategoryRepository->fetchAllWithPagination($keyword);
+        $category->setPath('category?search='.$keyword);
         return view('admin.category.index', ['category' => $category, 'keyword' => $keyword]);
     }
 
@@ -53,31 +59,31 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CategoryRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        $this->validateRequest($request);
 
         $path = base_path() . '/storage/app/category/';
         $input = $request->all();
         $slug = str_slug($request->input('name'));
         $uniqueSlug = $this->buildUniqueSlug('category', $request->id, $slug);
         $file = null;
-        if(Input::file('image')){
-            $file = Input::file('image')->getClientOriginalName();
+        $inputFile = Input::file('image');
+        if($inputFile){
+            $file = $inputFile->getClientOriginalName();
         }
         $newFolderPath = $this->buildNewFolderPath($path, $file);
         $data =  ['name' => $input['name'], 'slug' => $uniqueSlug, 'description' => $input['description']];
         // File::makeDirectory($newFolderPath[1], 0777, true, true);
-        if(Input::file('image')){
+        if($inputFile){
             $data['image'] = $newFolderPath[0];
         }
         $data['created_at'] =new DateTime();
-        if(DB::table('category')->insert($data)){
-            if(Input::file('image')){
-                Input::file('image')->move($path, $newFolderPath[0]);
+        if($this->dbCategoryRepository->insert($data)){
+            if($inputFile){
+                $inputFile->move($path, $newFolderPath[0]);
             }
         }
         return redirect()->intended('20s-admin/category');
@@ -102,40 +108,42 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::find($id);
+        $category = $this->ormCategoryRepository->fetchById($id);
         return view('admin.category.edit', ['category' => $category]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CategoryRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CategoryRequest $request, $id)
     {
-        $this->validateRequest($request);
 
-        $category = Category::findOrFail($id);
+        $category = $this->ormCategoryRepository->fetchById($id);
         $path = base_path() . '/storage/app/category/';
         $input = $request->all();
         $file = null;
-        if(Input::file('image')){
-            $file = Input::file('image')->getClientOriginalName();
+        $inputFile = Input::file('image');
+        if($inputFile){
+            $newFolderPath = $this->buildNewFolderPath($path, $inputFile->getClientOriginalName());
+        }else{
+            $newFolderPath = $this->buildNewFolderPath($path, $file);
         }
         $slug = str_slug($request->input('name'));
         $uniqueSlug = $this->buildUniqueSlug('category', $request->id, $slug);
-        $newFolderPath = $this->buildNewFolderPath($path, $file);
+
         $data = ['name' => $input['name'], 'slug' => $uniqueSlug, 'description' => $input['description']];
         $data['updated_at'] =new DateTime();
-        if(Input::file('image')){
+        if($inputFile){
             $data['image'] = $newFolderPath[0];
         }
-        if(DB::table('category')->where('id', $id)->update($data)){
-            if(Input::file('image')){
+        if($this->dbCategoryRepository->update($id, $data)){
+            if($inputFile){
                 File::delete($path.'/'.$category->image);
-                Input::file('image')->move($path, $newFolderPath[0]);
+                $inputFile->move($path, $newFolderPath[0]);
             }
         }
         return redirect()->intended('20s-admin/category');
@@ -155,12 +163,11 @@ class CategoryController extends Controller
     public function remove(Request $request)
     {
         $id = $request->id;
-        $category = Category::findOrFail($id);
+        $category = $this->ormCategoryRepository->fetchById($id);
         $success = false;
+        $data = ['is_deleted' => 1];
         if($category){
-            $result = DB::table('category')
-            ->where('id', $id)
-            ->update(['is_deleted' => 1]);
+            $result = $this->dbCategoryRepository->update($id, $data);
             if($result){
                 $success = true;
             }
@@ -171,17 +178,13 @@ class CategoryController extends Controller
     public function active(Request $request)
     {
         $id = $request->id;
-        $category = Category::findOrFail($id);
+        $category = $this->ormCategoryRepository->fetchById($id);
         $success = false;
         if($category){
             if($category->is_activated == 0){
-                $result = DB::table('category')
-                ->where('id', $id)
-                ->update(['is_activated' => 1]);
+                $result = $this->dbCategoryRepository->update($id, ['is_activated' => 1]);
             }else{
-                $result = DB::table('category')
-                ->where('id', $id)
-                ->update(['is_activated' => 0]);
+                $result = $this->dbCategoryRepository->update($id, ['is_activated' => 0]);
             }
             if($result){
                 $success = true;
@@ -201,13 +204,5 @@ class CategoryController extends Controller
         }
 
         return array($newName, $newPath);
-    }
-
-    protected function validateRequest($request){
-        $this->validate($request, [
-            'name' => 'required',
-        ],[
-            'name.required' => 'Tiêu đề không được trống',
-        ]);
     }
 }

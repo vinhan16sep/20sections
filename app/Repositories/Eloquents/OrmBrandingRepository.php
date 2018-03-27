@@ -19,4 +19,17 @@ class OrmBrandingRepository
             };
         })->paginate($limit);
     }
+
+    public function update($id, $data = []){
+        Branding::where('id', $id)->update($data);
+        return true;
+    }
+
+    public function fetchWithTableById($id){
+        return Branding::with('category')->where(['is_deleted'=> 0, 'id' => $id])->first();
+    }
+
+    public function fetchById($id){
+        return Branding::findOrFail($id);
+    }
 }

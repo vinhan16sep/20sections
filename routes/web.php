@@ -99,7 +99,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
             
             Route::get('brand/register', 'BrandController@showRegisterForm');
             Route::post('brand/register', 'BrandController@brandRegister')->name('brand.register');
-            
+            Route::get('brand', 'BrandController@index')->name('brand.index');
+
             /*=====  End of Brand Routes  ======*/
             
             
