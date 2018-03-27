@@ -2,19 +2,26 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\ModeratorRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\DB;
 use Session;
 use App\Admin;
 
+use App\Repositories\Eloquents\OrmModeratorRepository;
+
 class ModeratorController extends Controller
 {
-    public function __construct()
+    /**
+     * @var OrmModeratorRepository
+     */
+    protected $ormModeratorRepository;
+    public function __construct(OrmModeratorRepository $ormModeratorRepository)
     {
         $this->middleware('auth:admin');
+        $this->ormModeratorRepository = $ormModeratorRepository;
     }
 
     public function showRegisterForm()
@@ -22,24 +29,14 @@ class ModeratorController extends Controller
     	return view('admin.moderator.register');
     }
 
-    public function register(Request $request)
+    /**
+     * @param ModeratorRequest $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function register(ModeratorRequest $request)
     {
-    	$this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:6|confirmed',
-            'password_confirmation' => 'required',
-        ],[
-            'name.required' => 'Họ tên không được trống',
-            'email.required' => 'Địa chỉ Email không được trống',
-            'password.required' => 'Mật khẩu không được trống',
-            'password_confirmation.required' => 'Xác nhận email không được trống',
-            'email.email' => 'Định dạng Email không đúng',
-            'password.min' => 'Mật khẩu phải lớn hơn 6 ký tự',
-            'password.confirmed' => 'Xác nhận mật khẩu không đúng',
-        ]);
 
-        $checkEmail = DB::table('admins')->where('email', $request->input('email'))->first();
+        $checkEmail = $this->ormModeratorRepository->checkEmail($request->input('email'));
         if(!empty($checkEmail)){
             Session::flash('message', 'Email đã tồn tại');
             return redirect('20s-admin/register');
@@ -49,7 +46,7 @@ class ModeratorController extends Controller
         $input['password'] = bcrypt($input['password']);
         $input['role'] = 88;
         unset($input['password_confirmation']);
-        $createAdmin = Admin::create($input);
+        $createAdmin = $this->ormModeratorRepository->insert($input);
         
         if($createAdmin == true){
             return redirect('20s-admin');

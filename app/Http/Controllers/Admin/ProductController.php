@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -13,8 +14,50 @@ use DateTime;
 use Storage;
 use Crypt;
 
+use App\Repositories\Eloquents\OrmProductRepository;
+use App\Repositories\Db\DBProductRepository;
+
+use App\Repositories\Eloquents\OrmCategoryRepository;
+
+use App\Repositories\Db\DbBrandingRepository;
+
 class ProductController extends Controller
 {
+    /**
+     * @var OrmProductRepository
+     */
+    protected $ormProductRepository;
+    /**
+     * @var DBProductRespository
+     */
+    protected $dbProductRepository;
+    /**
+     * @var OrmCategoryRepository
+     */
+    protected $ormCategoryRepository;
+    /**
+     * @var DbBrandingRepository
+     */
+    protected $dbBrandingRepository;
+
+    /**
+     * ProductController constructor.
+     * @param OrmProductRepository $ormProductRepository
+     * @param DBProductRepository $dbProductRepository
+     */
+    public function __construct(
+        OrmProductRepository $ormProductRepository,
+        DBProductRepository $dbProductRepository,
+        OrmCategoryRepository $ormCategoryRepository,
+        DbBrandingRepository $dbBrandingRepository
+        ){
+        $this->middleware('auth:admin');
+        $this->ormProductRepository = $ormProductRepository;
+        $this->dbProductRepository = $dbProductRepository;
+        $this->ormCategoryRepository = $ormCategoryRepository;
+        $this->dbBrandingRepository = $dbBrandingRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,33 +65,21 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $category = DB::table('category')->get();
-        $keyword = Input::get('search');
-        $category_id = Input::get('category_id');
-        $branding_id = Input::get('branding_id');
-
-        
+        $category = $this->ormCategoryRepository->fetchAll();
+        $searchCriteria = [
+            'name' => Input::get('search'),
+            'category_id' => Input::get('category_id'),
+            'branding_id' => Input::get('branding_id')
+        ];
         // print_r($chart);die;
-        $product = Product::with('category', 'branding')->whereExists(function($query) use ($keyword, $category_id, $branding_id){
-            $query->where('is_deleted' , 0);
-            if($keyword != ''){
-                $query->where('name', 'like', '%'.$keyword.'%');
-            };
-            if($category_id != ''){
-                $query->where('category_id', $category_id);
-            };
-            if($branding_id != ''){
-                $query->where('branding_id', $branding_id);
-            };
-            
-        })->paginate(10);
-        $product->setPath('product?search='.$keyword.'&category_id='.$category_id.'&branding_id='.$branding_id);
+        $product = $this->ormProductRepository->fetchAllWithPagination(10, $searchCriteria);
+        $product->setPath('product?search='.$searchCriteria['name'].'&category_id='.$searchCriteria['category_id'].'&branding_id='.$searchCriteria['branding_id']);
         return view('admin.product.index', [
                         'category' => $category,
                         'product' => $product,
-                        'keyword' => $keyword,
-                        'category_id' => $category_id,
-                        'branding_id' => $branding_id
+                        'keyword' => $searchCriteria['name'],
+                        'category_id' => $searchCriteria['category_id'],
+                        'branding_id' => $searchCriteria['branding_id']
                     ]);
     }
 
@@ -59,19 +90,18 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $category = DB::table('category')->get();
+        $category = $this->ormCategoryRepository->fetchAll();
         return view('admin.product.create', ['category' => $category]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  ProductRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        $this->validateRequest($request);
 
         $path = base_path() . '/' . 'storage/app/products';
         $slug = str_slug($request->input('name'));
@@ -92,7 +122,7 @@ class ProductController extends Controller
         $input['slug'] = $uniqueSlug;
         $input['created_at'] = new DateTime();
 
-        Product::create($input);
+        $this->ormProductRepository->insert($input);
 
         return redirect()->intended('20s-admin/product');
 
@@ -106,7 +136,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::with('category', 'branding')->where(['is_deleted' => 0, 'id' => $id])->first();
+        $product = $this->ormProductRepository->fetchByIdWithRelationData($id);
         return view('admin.product.detail', ['product' => $product]);
     }
 
@@ -118,22 +148,21 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $category = DB::table('category')->get();
-        $product = Product::with('category', 'branding')->where(['is_deleted' => 0, 'id' => $id])->first();
+        $category = $this->ormCategoryRepository->fetchAll();
+        $product = $this->ormProductRepository->fetchByIdWithRelationData($id);
         return view('admin.product.edit', ['category' => $category, 'product' => $product]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  ProductRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProductRequest $request, $id)
     {
-        $this->validateRequest($request);
-        $product = Product::findOrFail($id);
+        $product = $this->ormProductRepository->fetchById($id);
 
         $path = base_path() . '/storage/app/products/';
         $slug = str_slug($request->input('name'));
@@ -141,8 +170,7 @@ class ProductController extends Controller
         if($slug != $product->slug){
             rename($path . '/' . $product->slug, $path . '/' . $uniqueSlug);
         }
-        // $input = $request->all();
-        
+
         // $newFolderPath = $this->buildNewFolderPath($path, $file);
 
         $keys = ['name','branding_id', 'category_id', 'quantity', 'price', 'time', 'production', 'madein', 'madeof', 'weight', 'volume', 'description', 'content', ];
@@ -163,8 +191,7 @@ class ProductController extends Controller
             $input['image'] = $image_json;
         }
         $input['updated_at'] =new DateTime();
-        Product::where('id', $id)
-            ->update($input);
+        $this->ormProductRepository->update($id, $input);
         return redirect()->intended('20s-admin/product');
     }
 
@@ -186,8 +213,8 @@ class ProductController extends Controller
          * Product active and deactive
          *
          */
-        $active = Product::where(['is_deleted' => 0, 'is_activated' => 0])->count();
-        $deactive = Product::where(['is_deleted' => 0, 'is_activated' => 1])->count();
+        $active = $this->ormProductRepository->fetchActive(0);
+        $deactive = $this->ormProductRepository->fetchActive(1);
         $pieChart = [
                 ['value' => $active, 'highlight' => '#00a65a', 'color' => '#00a65a', 'label' => 'Đang sử dụng'],
                 ['value' => $deactive, 'highlight' => '#f56954', 'color' => '#f39c12', 'label' =>  'Không sử dụng']
@@ -199,8 +226,9 @@ class ProductController extends Controller
          * In stock and out of stock
          *
          */
-        $inStock = Product::where([['is_deleted', 0], ['quantity', '!=', 0]])->count();
-        $outOfStock = Product::where([['is_deleted', 0], ['quantity', '=', 0]])->count();
+        $quantity = $this->ormProductRepository->fetchQuantity();
+        $inStock = $quantity['inStock'];
+        $outOfStock = $quantity['outStock'];
         
         $quantityChart = [
                 ['value' => $inStock, 'highlight' => '#00a65a', 'color' => '#00a65a', 'label' => 'Còn hàng'],
@@ -221,8 +249,8 @@ class ProductController extends Controller
 
     public function selectBranding(Request $request)
     {
-        $category_id = $request->category_id;
-        $branding = DB::table('branding')->where(['is_deleted' => 0, 'category_id' => $category_id])->get();
+        $categoryId = $request->category_id;
+        $branding = $this->dbBrandingRepository->fetchByCategoryId($categoryId);
         $success = false;
         if($branding->toArray() != null){
             $success = true;
@@ -235,7 +263,7 @@ class ProductController extends Controller
         $image = $request->image;
         $id = $request->product_id;
         $path = base_path() . '/storage/app/products/';
-        $product = Product::findOrFail($id);
+        $product = $this->ormProductRepository->fetchById($id);
 
 
         $upload = [];
@@ -249,9 +277,8 @@ class ProductController extends Controller
         
         $image_json = json_encode($newUpload);
         $success = false;
-        $result = DB::table('product')
-            ->where('id', $id)
-            ->update(['image' => $image_json]);
+        $data = ['image' => $image_json];
+        $result = $this->ormProductRepository->update($id, $data);
         if($result){
             File::delete($path.$product->slug.'/'.$image);
             $success = true;
@@ -265,10 +292,9 @@ class ProductController extends Controller
         $path = base_path() . '/storage/app/products/';
         $product = Product::findOrFail($id);
         $success = false;
+        $data = ['is_deleted' => 1];
         if($product){
-            $result = DB::table('product')
-            ->where('id', $id)
-            ->update(['is_deleted' => 1]);
+            $result = $this->ormProductRepository->update($id, $data);
             if($result){
                 File::deleteDirectory($path.$product->slug);
                 $success = true;
@@ -280,45 +306,18 @@ class ProductController extends Controller
     public function active(Request $request)
     {
         $id = $request->id;
-        $product = Product::findOrFail($id);
+        $product = $this->ormProductRepository->fetchById($id);
         $success = false;
         if($product){
             if($product->is_activated == 0){
-                $result = DB::table('product')
-                ->where('id', $id)
-                ->update(['is_activated' => 1]);
+                $result = $this->ormProductRepository->update($id, ['is_activated' => 1]);
             }else{
-                $result = DB::table('product')
-                ->where('id', $id)
-                ->update(['is_activated' => 0]);
+                $result = $this->ormProductRepository->update($id, ['is_activated' => 0]);
             }
             if($result){
                 $success = true;
             }
         }
         return response()->json(['success' => $success, 'status' => '200']);
-    }
-
-    protected function validateRequest($request){
-        $this->validate($request, [
-            'name' => 'required',
-            'category_id' => 'required',
-            'branding_id' => 'required',
-            'quantity' => 'required|numeric',
-            'price' => 'required',
-            'description' => 'required',
-            'content' => 'required',
-            'production' => 'required',
-        ],[
-            'name.required' => 'Tiêu đề không được trống',
-            'category_id.required' => 'Danh mục không được trống',
-            'branding_id.required' => 'Thương hiệu không được trống',
-            'quantity.required' => 'Số lượng không được trống',
-            'price.required' => 'Giá không được trống',
-            'description.required' => 'Giới thiệu không được trống',
-            'content.required' => 'Nội dung không được trống',
-            'production.required' => 'Nhà sản xuất không được trống',
-            'quantity.numeric' => 'Số lượng phải là số',
-        ]);
     }
 }

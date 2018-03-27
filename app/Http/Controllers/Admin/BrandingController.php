@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\BrandingRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
-use App\Branding;
 use File;
 use DateTime;
 
 use App\Repositories\Eloquents\OrmBrandingRepository;
 use App\Repositories\Db\DbBrandingRepository;
+
+use App\Repositories\Eloquents\OrmCategoryRepository;
 
 class BrandingController extends Controller
 {
@@ -25,15 +25,23 @@ class BrandingController extends Controller
      * @var DbBrandingRepository
      */
     protected $dbBrandingRepository;
-
+    /**
+     * @var OrmCategoryRepository
+     */
+    protected $ormCategoryRepository;
     /**
      * BrandingController constructor.
      */
-    public function __construct(OrmBrandingRepository $ormBrandingRepository, DbBrandingRepository $dbBrandingRepository){
+    public function __construct(
+        OrmBrandingRepository $ormBrandingRepository,
+        DbBrandingRepository $dbBrandingRepository,
+        OrmCategoryRepository $ormCategoryRepository
+        ){
         $this->middleware('auth:admin');
 
         $this->ormBrandingRepository = $ormBrandingRepository;
         $this->dbBrandingRepository = $dbBrandingRepository;
+        $this->ormCategoryRepository = $ormCategoryRepository;
     }
 
     /**
@@ -42,7 +50,7 @@ class BrandingController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $category = DB::table('category')->get();
+        $category = $this->ormCategoryRepository->fetcAll();
 
         $searchCriteria = [
             'name' => Input::get('search'),
@@ -61,7 +69,7 @@ class BrandingController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(){
-        $category = DB::table('category')->get();
+        $category = $this->ormCategoryRepository->fetchAll();
         return view('admin.branding.create', ['category' => $category]);
     }
 
@@ -75,18 +83,21 @@ class BrandingController extends Controller
         $slug = str_slug($request->input('name'));
         $uniqueSlug = $this->buildUniqueSlug('branding', $request->id, $slug);
         $file = null;
-        if(Input::file('image')){
-            $file = Input::file('image')->getClientOriginalName();
+        $inputFile = Input::file('image');
+        if($inputFile){
+            $newFolderPath = $this->buildNewFolderPath($path, $inputFile->getClientOriginalName());
+        }else{
+            $newFolderPath = $this->buildNewFolderPath($path, $file);
         }
-        $newFolderPath = $this->buildNewFolderPath($path, $file);
+
         $data =  ['name' => $input['name'], 'slug' => $uniqueSlug, 'description' => $input['description'], 'category_id' => $input['category_id']];
-        if(Input::file('image')){
+        if($inputFile){
             $data['image'] = $newFolderPath[0];
         }
         $data['created_at'] =new DateTime();
-        if(DB::table('branding')->insert($data)){
-            if(Input::file('image')){
-                Input::file('image')->move($path, $newFolderPath[0]);
+        if($this->dbBrandingRepository->insert($data)){
+            if($inputFile){
+                $inputFile->move($path, $newFolderPath[0]);
             }
         }
         return redirect()->intended('20s-admin/branding');
@@ -109,8 +120,8 @@ class BrandingController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id){
-        $category = DB::table('category')->get();
-        $branding = Branding::with('category')->where(['is_deleted'=> 0, 'id' => $id])->first();
+        $category = $this->ormCategoryRepository->fetchAll();
+        $branding = $this->ormBrandingRepository->fetchWithTableById($id);
         return view('admin.branding.edit', ['branding' => $branding, 'category' => $category]);
     }
 
@@ -120,7 +131,7 @@ class BrandingController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(BrandingRequest $request, $id){
-        $category = Branding::findOrFail($id);
+        $branding = $this->ormBrandingRepository->fetchById($id);
         $path = base_path() . '/storage/app/branding/';
         $input = $request->all();
         $file = null;
@@ -135,9 +146,9 @@ class BrandingController extends Controller
         if(Input::file('image')){
             $data['image'] = $newFolderPath[0];
         }
-        if(DB::table('branding')->where('id', $id)->update($data)){
+        if($this->ormBrandingRepository->update($id, $data)){
             if(Input::file('image')){
-                File::delete($path.'/'.$category->image);
+                File::delete($path.'/'.$branding->image);
                 Input::file('image')->move($path, $newFolderPath[0]);
             }
         }
@@ -160,12 +171,10 @@ class BrandingController extends Controller
      */
     public function remove(Request $request){
         $id = $request->id;
-        $branding = Branding::findOrFail($id);
+        $branding = $this->ormBrandingRepository->fetchById($id);
         $success = false;
         if($branding){
-            $result = DB::table('branding')
-            ->where('id', $id)
-            ->update(['is_deleted' => 1]);
+            $result = $this->dbBrandingRepository->update($id);
             if($result){
                 $success = true;
             }
@@ -179,17 +188,13 @@ class BrandingController extends Controller
      */
     public function active(Request $request){
         $id = $request->id;
-        $branding = Branding::findOrFail($id);
+        $branding = $this->ormBrandingRepository->fetchById($id);
         $success = false;
         if($branding){
             if($branding->is_activated == 0){
-                $result = DB::table('branding')
-                ->where('id', $id)
-                ->update(['is_activated' => 1]);
+                $result = $this->dbBrandingRepository->active($id, 1);
             }else{
-                $result = DB::table('branding')
-                ->where('id', $id)
-                ->update(['is_activated' => 0]);
+                $result = $this->dbBrandingRepository->active($id, 0);
             }
             if($result){
                 $success = true;

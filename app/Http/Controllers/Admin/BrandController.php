@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\BrandRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -21,25 +22,10 @@ class BrandController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param BrandRequest $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function brandRegister(Request $request){
-
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:6|confirmed',
-            'password_confirmation' => 'required',
-        ],[
-            'name.required' => 'Họ tên không được trống',
-            'email.required' => 'Địa chỉ Email không được trống',
-            'password.required' => 'Mật khẩu không được trống',
-            'password_confirmation.required' => 'Xác nhận email không được trống',
-            'email.email' => 'Định dạng Email không đúng',
-            'password.min' => 'Mật khẩu phải lớn hơn 6 ký tự',
-            'password.confirmed' => 'Xác nhận mật khẩu không đúng',
-        ]);
+    public function brandRegister(BrandRequest $request){
 
         $checkEmail = DB::table('users')->where('email', $request->input('email'))->first();
         if(!empty($checkEmail)){
