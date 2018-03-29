@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\BrandRequest;
+use function GuzzleHttp\Psr7\str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -13,8 +14,19 @@ use App\User;
 use Validator;
 use Session;
 
+use App\Repositories\Eloquents\OrmUserRepository;
+
 class BrandController extends Controller
 {
+    /**
+     * @var OrmUserRepository
+     */
+    protected $ormUserRepository;
+
+    public function __construct(OrmUserRepository $ormUserRepository)
+    {
+        $this->ormUserRepository = $ormUserRepository;
+    }
 
     public function showRegisterForm()
     {
@@ -38,7 +50,7 @@ class BrandController extends Controller
         $input['created_by'] = Auth::guard('admin')->user()->email;
         $input['verification_code']  = str_random(20);
         // print_r($input);die;
-        $user = User::create($input);
+        $user = $this->ormUserRepository->insert($input);
         $success['token'] =  $user->createToken('Brand')->accessToken;
         $success['name'] =  $user->name;
         if($user == true){
@@ -56,30 +68,23 @@ class BrandController extends Controller
     }
 
     public function index(){
-        $keyword = Input::get('search');
-        $dateRange = Input::get('search_date');
+        $searchCriteria = [
+            'name' => Input::get('search'),
+            'dateRange' => Input::get('search_date'),
+        ];
+
         $dateFrom = null;
         $dateTo = null;
-        if($dateRange != ''){
-            $date = explode(' - ', $dateRange);
+        if($searchCriteria['dateRange'] != ''){
+            $date = explode(' - ', $searchCriteria['dateRange']);
             if(count($date) == 2){
-                $dateFrom = date('Y:m:d',strtotime($date[0]));
-                $dateTo = date('Y:m:d 23:59:59',strtotime($date[1]));
+                $dateFrom = date('Y-m-d',strtotime($date[0]));
+                $dateTo = date('Y-m-d 23:59:59',strtotime($date[1]));
             }
         }
-        $brand = User::whereExists(function ($query) use ($dateRange, $dateFrom, $dateTo, $keyword){
-            $query->where('role', 98);
-            if ($dateRange != ''){
-                $query->where([
-                    ['created_at', '>=', $dateFrom],
-                    ['created_at', '<=', $dateTo]
-                ]);
-            }
-            if ($keyword != ''){
-                $query->where('name', 'like', '%'.$keyword.'%')->orWhere('email', 'like', '%'.$keyword.'%');
-            }
-        })->get();
-        return view('admin.brand.index', ['brand' => $brand, 'dateRange' => $dateRange, 'keyword' => $keyword]);
+        $brand = $this->ormUserRepository->fetchAllWithPagination(10, $searchCriteria, $dateFrom, $dateTo, 98);
+        $brand->setPath('brand?search='.$searchCriteria['name'].'&search_date='.$searchCriteria['dateRange']);
+        return view('admin.brand.index', ['brand' => $brand, 'dateRange' => $searchCriteria['dateRange'], 'keyword' => $searchCriteria['name']]);
     }
 }
 

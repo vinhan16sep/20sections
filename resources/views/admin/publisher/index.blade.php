@@ -1,4 +1,5 @@
-@extends('admin.brand.base')
+
+@extends('admin.publisher.base')
 @section('action-content')
     <!-- Main content -->
     <section class="content">
@@ -8,7 +9,7 @@
 
                 <div class="box collapsed-box box-danger">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Thêm mới và tìm kiếm Brand</h3>
+                        <h3 class="box-title">Thêm mới và tìm kiếm sản phẩm</h3>
 
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
@@ -18,7 +19,7 @@
                     </div>
                     <div class="box-body">
                         <div class="row">
-                            <form action="{{ route('brand.index') }}" method="get">
+                            <form action="{{ route('publisher.index') }}" method="get">
                                 @csrf
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -52,7 +53,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <a href="{{ route('product.create') }}" class="btn btn-primary" role="button">Thêm sản phẩm</a>
+                        <a href="" class="btn btn-primary" role="button">Thêm sản phẩm</a>
                         <div class="table-responsive">
                             <table id="table" class="table table-hover">
                                 <thead>
@@ -65,8 +66,8 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @if($brand)
-                                    @foreach($brand as $key => $value)
+                                @if($publisher)
+                                    @foreach($publisher as $key => $value)
                                         <tr>
                                             <td>1</td>
                                             <td><a href="#">{{ $value['name'] }}</a></td>
@@ -115,7 +116,7 @@
                                 </tr>
                                 </tfoot>
                             </table>
-                            {{ $brand->appends(Request::get('page'))->links()}}
+                            {{ $publisher->appends(Request::get('page'))->links()}}
                         </div>
                     </div>
                     <!-- /.box-body -->
