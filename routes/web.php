@@ -102,7 +102,14 @@ Route::group(['middleware' => ['auth:admin']], function () {
             Route::get('brand', 'BrandController@index')->name('brand.index');
 
             /*=====  End of Brand Routes  ======*/
-            
+
+            /*====================================
+            =            Publisher Routes            =
+            ====================================*/
+
+            Route::get('publisher', 'PublisherController@index')->name('publisher.index');
+
+            /*=====  End of Publisher Routes  ======*/
             
         });
     });

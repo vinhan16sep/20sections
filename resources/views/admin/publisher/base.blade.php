@@ -1,28 +1,25 @@
 @extends('admin.layouts.backend-template')
-@section('title', 'Thương hiệu Sản Phẩm')
+@section('title', 'Publisher')
 @section('content')
     <link rel="stylesheet" href="{{ asset('public/sass/forms.css') }}">
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Brand
-                <small>Danh sách Brand</small>
+                Publisher
+                <small>Danh sách Publisher</small>
             </h1>
             <ol class="breadcrumb">
-                <li class="active">Brand</li>
+                <li class="active">Publisher</li>
             </ol>
         </section>
-        @yield('action-content')
-        <!-- /.content -->
+    @yield('action-content')
+    <!-- /.content -->
     </div>
     <script src="{{ asset ("public/bower_components/moment/min/moment.min.js") }}"></script>
     <script src="{{ asset ("public/bower_components/bootstrap-daterangepicker/daterangepicker.js") }}"></script>
     <!-- bootstrap datepicker -->
     <script src="{{ asset ("public/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js") }}"></script>
-
-
-
 
     <script>
         $('#reservation').daterangepicker({
@@ -41,4 +38,5 @@
             $(this).val('');
         });
     </script>
+
 @endsection
