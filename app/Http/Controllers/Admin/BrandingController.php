@@ -94,7 +94,8 @@ class BrandingController extends Controller
         if($inputFile){
             $data['image'] = $newFolderPath[0];
         }
-        $data['created_at'] =new DateTime();
+        $data['created_by'] = Auth::guard('admin')->user()->email;
+        $data['created_at'] = new DateTime();
         if($this->dbBrandingRepository->insert($data)){
             if($inputFile){
                 $inputFile->move($path, $newFolderPath[0]);
@@ -143,13 +144,15 @@ class BrandingController extends Controller
         $newFolderPath = $this->buildNewFolderPath($path, $file);
         $data =  ['name' => $input['name'], 'slug' => $uniqueSlug, 'description' => $input['description'], 'category_id' => $input['category_id']];
         $data['updated_at'] =new DateTime();
-        if(Input::file('image')){
+        $data['updated_by'] = Auth::guard('admin')->user()->email;
+        $inputFile = Input::file('image');
+        if($inputFile){
             $data['image'] = $newFolderPath[0];
         }
         if($this->ormBrandingRepository->update($id, $data)){
-            if(Input::file('image')){
+            if($inputFile){
                 File::delete($path.'/'.$branding->image);
-                Input::file('image')->move($path, $newFolderPath[0]);
+                $inputFile->move($path, $newFolderPath[0]);
             }
         }
         return redirect()->intended('20s-admin/branding');

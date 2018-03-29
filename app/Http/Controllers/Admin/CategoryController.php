@@ -81,6 +81,7 @@ class CategoryController extends Controller
             $data['image'] = $newFolderPath[0];
         }
         $data['created_at'] =new DateTime();
+        $data['created_by'] = Auth::guard('admin')->user()->email;
         if($this->dbCategoryRepository->insert($data)){
             if($inputFile){
                 $inputFile->move($path, $newFolderPath[0]);
@@ -137,6 +138,7 @@ class CategoryController extends Controller
 
         $data = ['name' => $input['name'], 'slug' => $uniqueSlug, 'description' => $input['description']];
         $data['updated_at'] =new DateTime();
+        $data['updated_by'] = Auth::guard('admin')->user()->email;
         if($inputFile){
             $data['image'] = $newFolderPath[0];
         }

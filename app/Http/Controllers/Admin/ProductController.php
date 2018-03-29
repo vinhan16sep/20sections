@@ -121,6 +121,7 @@ class ProductController extends Controller
         $input['image'] = $image_json;
         $input['slug'] = $uniqueSlug;
         $input['created_at'] = new DateTime();
+        $input['created_by'] = Auth::guard('admin')->user()->email;
 
         $this->ormProductRepository->insert($input);
 
@@ -191,6 +192,8 @@ class ProductController extends Controller
             $input['image'] = $image_json;
         }
         $input['updated_at'] =new DateTime();
+        $input['updated_by'] = Auth::guard('admin')->user()->email;
+
         $this->ormProductRepository->update($id, $input);
         return redirect()->intended('20s-admin/product');
     }

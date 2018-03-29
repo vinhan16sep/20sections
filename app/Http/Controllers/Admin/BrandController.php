@@ -35,6 +35,7 @@ class BrandController extends Controller
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $input['role'] = 98;
+        $input['created_by'] = Auth::guard('admin')->user()->email;
         $input['verification_code']  = str_random(20);
         // print_r($input);die;
         $user = User::create($input);
