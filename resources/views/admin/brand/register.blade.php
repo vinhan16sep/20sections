@@ -1,4 +1,5 @@
 @extends('admin.brand.base')
+@section('title-base', 'Đăng ký Brand')
 @section('action-content')
 	<div class="container">
 		<div class="row">

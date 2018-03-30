@@ -1,13 +1,18 @@
 @extends('admin.layouts.backend-template')
-@section('title', 'Thương hiệu Sản Phẩm')
+@section('title', 'Brand')
 @section('content')
-    <link rel="stylesheet" href="{{ asset('public/sass/forms.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/sass/admin/forms.css') }}">
+    <style>
+        .error{
+            color: red;
+        }
+    </style>
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
                 Brand
-                <small>Danh sách Brand</small>
+                <small>@yield('title-base')</small>
             </h1>
             <ol class="breadcrumb">
                 <li class="active">Brand</li>
@@ -20,6 +25,8 @@
     <script src="{{ asset ("public/bower_components/bootstrap-daterangepicker/daterangepicker.js") }}"></script>
     <!-- bootstrap datepicker -->
     <script src="{{ asset ("public/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js") }}"></script>
+    <script src="{{ asset("public/admin/js/brand.js") }}"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
 
 
 

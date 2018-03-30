@@ -20,9 +20,6 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    {{-- <div class="col-md-3">
-                        <a href="{{ route('product.create') }}" class="btn btn-primary" role="button">Thêm sản phẩm</a>
-                    </div> --}}
                     <div class="row">
                         <form action="{{ route('product.index') }}" method="get">
                         @csrf

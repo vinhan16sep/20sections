@@ -32,3 +32,36 @@ RESET FORMS STYLE OF ADMINLTE
         margin-left: 15%;
     }
 }
+
+.image-preview{
+    .item{
+        .mask{
+            width: 250px;
+            height: 100px;
+            overflow: hidden;
+
+            padding: 5px;
+            display: inline-block;
+
+            border: 1px solid #4e4e4e;
+
+            position: relative;
+
+            img{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            span.close-preview{
+                position: absolute;
+                top: 5px;
+                right: 5px;
+
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
