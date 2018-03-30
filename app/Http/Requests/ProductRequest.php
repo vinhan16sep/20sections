@@ -3,16 +3,23 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Routing\Route;
 
-class ProductRequest extends FormRequest
-{
+class ProductRequest extends FormRequest {
+
+    private $action;
+
+    function __construct(Route $route, array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null) {
+        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+        $this->action = $route;
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         return true;
     }
 
@@ -21,10 +28,10 @@ class ProductRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
-    {
-        return [
+    public function rules() {
+        $rules = [
             'name' => 'required',
+            'image' => 'required',
             'category_id' => 'required',
             'branding_id' => 'required',
             'quantity' => 'required|numeric',
@@ -33,15 +40,20 @@ class ProductRequest extends FormRequest
             'content' => 'required',
             'production' => 'required'
         ];
+        $action = $this->action->getActionMethod();
+        if($action == 'update'){
+            unset($rules['image']);
+        }
+        return $rules;
     }
 
     /**
      * @return array
      */
-    public function messages()
-    {
-        return [
+    public function messages() {
+        $messages = [
             'name.required' => 'Tiêu đề không được trống',
+            'image.required' => 'Vui lòng upload hình ảnh cho sản phẩm',
             'category_id.required' => 'Danh mục không được trống',
             'branding_id.required' => 'Thương hiệu không được trống',
             'quantity.required' => 'Số lượng không được trống',
@@ -51,5 +63,13 @@ class ProductRequest extends FormRequest
             'production.required' => 'Nhà sản xuất không được trống',
             'quantity.numeric' => 'Số lượng phải là số'
         ];
+
+        $action = $this->action->getActionMethod();
+        if($action == 'update'){
+            unset($messages['image.required']);
+        }
+
+
+        return $messages;
     }
 }

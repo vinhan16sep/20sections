@@ -68,4 +68,23 @@ class OrmProductRepository
             'outStock' => $outStock
         ];
     }
+
+    public function fetchAllWithBrandId($limit = 10, $seachCriteria = [], $brandId){
+        $name = $seachCriteria['name'];
+        $categoryId = $seachCriteria['category_id'];
+        $brandingId = $seachCriteria['branding_id'];
+        return $product = $this->product::with('category', 'branding')->whereExists(function($query) use ($name, $categoryId, $brandingId, $brandId){
+            $query->where([['is_deleted' , 0],['brand_id', $brandId]]);
+            if($name != ''){
+                $query->where('name', 'like', '%'.$name.'%');
+            };
+            if($categoryId != ''){
+                $query->where('category_id', $categoryId);
+            };
+            if($brandingId != ''){
+                $query->where('branding_id', $brandingId);
+            };
+
+        })->paginate($limit);
+    }
 }

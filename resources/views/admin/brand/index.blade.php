@@ -1,4 +1,5 @@
 @extends('admin.brand.base')
+@section('title-base', 'Danh sách Brand')
 @section('action-content')
     <!-- Main content -->
     <section class="content">
@@ -48,11 +49,11 @@
                 </div>
                 <div class="box box-danger">
                     <div class="box-header">
-                        <h3 class="box-title">SẢN PHẨM</h3>
+                        <h3 class="box-title">Brand</h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <a href="{{ route('product.create') }}" class="btn btn-primary" role="button">Thêm sản phẩm</a>
+                        <a href="{{ route('brand.register') }}" class="btn btn-primary" role="button">Thêm Brand</a>
                         <div class="table-responsive">
                             <table id="table" class="table table-hover">
                                 <thead>
@@ -69,7 +70,7 @@
                                     @foreach($brand as $key => $value)
                                         <tr>
                                             <td>1</td>
-                                            <td><a href="#">{{ $value['name'] }}</a></td>
+                                            <td><a href="{{ route('brand.detail', ['id' => $value['id']]) }}">{{ $value['name'] }}</a></td>
                                             <td>{{ $value['email'] }}</td>
                                             <td>
                                                 <button class="btn btn-default btn-sm" type="button" data-toggle="collapse" data-target="#collapse_{{ $value['id'] }}" aria-expanded="true" aria-controls="collapse_1">Xem chi tiết</button>
