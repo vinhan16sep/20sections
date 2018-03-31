@@ -26,7 +26,7 @@
     <!-- bootstrap datepicker -->
     <script src="{{ asset ("public/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js") }}"></script>
     <script src="{{ asset("public/admin/js/brand.js") }}"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
+    <script src="{{ asset("public/bower_components/jquery-validation/dist/jquery.validate.js") }}"></script>
 
 
 
