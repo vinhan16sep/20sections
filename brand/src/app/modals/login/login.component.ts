@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {NgForm} from '@angular/forms';
+import { NgForm } from '@angular/forms';
 
-import {UserService} from './../../user/user.service';
+import { UserService } from './../../user/user.service';
 
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-login',
@@ -13,19 +14,21 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 export class LoginComponent implements OnInit {
 
     closeResult: string;
+    modalReference: any;
 
-    constructor(private modalService: NgbModal, private userService: UserService) {
+    constructor(private modalService: NgbModal, private userService: UserService, private router: Router) {
     }
 
     ngOnInit() {
     }
 
     open(content) {
-        this.modalService.open(content, {size: 'lg'}).result.then((result) => {
-            this.closeResult = `Closed with: ${result}`;
-        }, (reason) => {
-            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        });
+        this.modalReference = this.modalService.open(content, {size: 'lg'})
+        this.modalReference.result.then((result) => {
+                this.closeResult = `Closed with: ${result}`;
+            }, (reason) => {
+                this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            });
     }
 
     private getDismissReason(reason: any): string {
@@ -34,18 +37,25 @@ export class LoginComponent implements OnInit {
         } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
             return 'by clicking on a backdrop';
         } else {
-            return  `with: ${reason}`;
+            return `with: ${reason}`;
         }
     }
 
     onLogin(form: NgForm) {
         this.userService.login(form.value.email, form.value.password)
             .subscribe(
-                tokenData => console.log(tokenData),
-                error => console.log(error)
-            );
+                (tokenData) => {
+                    if (this.userService.getToken() === tokenData.token) {
+                        this.modalReference.dismiss();
 
-        // window.location.href='http://localhost:8098/dashboard';
+                        this.router.navigate(['/dashboard']);
+                    }
+                },
+                (error) => {
+                    this.modalReference.dismiss();
+                    console.log(error);
+                }
+            );
     }
 
 

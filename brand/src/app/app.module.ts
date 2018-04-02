@@ -15,13 +15,23 @@ import { NotFoundComponent } from './not-found.component';
 import { UserService } from './user/user.service';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './modals/login/login.component';
+import { AppLayoutComponent } from './layout/app-layout/app-layout.component';
+import { AppHeaderComponent } from './layout/app-header/app-header.component';
+import { HomeLayoutComponent } from './layout/home-layout/home-layout.component';
+import { HomeHeaderComponent } from './layout/home-header/home-header.component';
+import { HomeFooterComponent } from './layout/home-footer/home-footer.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         NotFoundComponent,
         HomeComponent,
-        LoginComponent
+        LoginComponent,
+        AppLayoutComponent,
+        AppHeaderComponent,
+        HomeLayoutComponent,
+        HomeHeaderComponent,
+        HomeFooterComponent
     ],
     imports: [
         BrowserModule,
