@@ -50,7 +50,7 @@ class BrandingController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $category = $this->ormCategoryRepository->fetcAll();
+        $category = $this->ormCategoryRepository->fetchAll();
 
         $searchCriteria = [
             'name' => Input::get('search'),

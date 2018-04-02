@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
                 error => console.log(error)
             );
 
-        window.location.href='http://localhost:8098/dashboard';
+        // window.location.href='http://localhost:8098/dashboard';
     }
 
 
