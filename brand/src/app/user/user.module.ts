@@ -7,10 +7,11 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 
 import { CommonModule } from '../common/common.module';
+import { InformationComponent } from './information/information.component';
 
 @NgModule({
     imports: [BrowserModule, FormsModule, CommonModule, UserRoutingModule],
-    declarations: [RegisterComponent, LoginComponent]
+    declarations: [RegisterComponent, LoginComponent, InformationComponent]
 })
 
 export class UserModule {

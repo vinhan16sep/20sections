@@ -6,6 +6,7 @@ import{ AppLayoutComponent } from './layout/app-layout/app-layout.component';
 
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { InformationComponent } from './user/information/information.component';
 import { NotFoundComponent } from './not-found.component';
 
 const routes: Routes = [
@@ -23,7 +24,8 @@ const routes: Routes = [
         path: '',
         component: AppLayoutComponent,
         children: [
-            { path: 'dashboard', component: DashboardComponent }
+            { path: 'dashboard', component: DashboardComponent },
+            { path: 'personal-information', component: InformationComponent }
         ]
     },
 

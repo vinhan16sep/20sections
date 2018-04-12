@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
+import { AppGlobal } from '../../app.global';
+
 import { UserService } from './../../user/user.service';
 
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -9,14 +11,15 @@ import { Router } from "@angular/router";
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss']
+    styleUrls: ['./login.component.scss'],
+    providers: [AppGlobal]
 })
 export class LoginComponent implements OnInit {
 
     closeResult: string;
     modalReference: any;
 
-    constructor(private modalService: NgbModal, private userService: UserService, private router: Router) {
+    constructor(private modalService: NgbModal, private appGlobal: AppGlobal, private userService: UserService, private router: Router) {
     }
 
     ngOnInit() {
@@ -42,13 +45,15 @@ export class LoginComponent implements OnInit {
     }
 
     onLogin(form: NgForm) {
-        this.userService.login(form.value.email, form.value.password)
+        this.userService.login(this.appGlobal.baseApiUrl, form.value.email, form.value.password)
             .subscribe(
                 (tokenData) => {
-                    if (this.userService.getToken() === tokenData.token) {
-                        this.modalReference.dismiss();
+                    this.modalReference.dismiss();
 
+                    if (this.userService.getToken() === tokenData.token) {
                         this.router.navigate(['/dashboard']);
+                    }else{
+                        this.router.navigate(['']);
                     }
                 },
                 (error) => {
