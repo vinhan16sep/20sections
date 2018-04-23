@@ -38,6 +38,10 @@ header{
 
 }
 
+section.main-content{
+    min-height: 100%;
+}
+
 footer{
     background-color: $primary;
     padding-top: 50px;

@@ -19,10 +19,25 @@ Author: hung.luong@matocreative.vn
 $primary: #ff7701;
 $primary_hover: #ff851b;
 
-$success: #5cb85c;
-$warning: #f0ad4e;
+/* SUCCESS */
+$success: #008d4c;
+$success-light: #30A06C;
+$success-lighter: #00E77D;
+
+/* WARNING */
+$warning: #db8b0b;
+$warning-light: #A86B08;
+$warning-lighter: #E1A94F;
+
+/* DANGER */
 $danger: #d9534f;
+$danger-light: #A63F3C;
+$danger-lighter: #DF9694;
+
+/* INFO */
 $info: #5bc0de;
+$info-light: #4694AB;
+$info-lighter: #A2D4E3;
 
 /* COLOR of TEXT */
 
@@ -36,6 +51,13 @@ $gray-lighter: #eee;
 ============= 2/MIXIN =============
  */
 
+@mixin transition500ms{
+    -webkit-transition: ease 500ms;
+    -moz-transition: ease 500ms;
+    -ms-transition: ease 500ms;
+    -o-transition: ease 500ms;
+    transition: ease 500ms;
+}
 
 /*
 ============= 3/RESET BOOTSTRAP =============

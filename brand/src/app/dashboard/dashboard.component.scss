@@ -1,0 +1,81 @@
+@import "./../../assets/main";
+
+.main-content{
+    min-height: 100%;
+}
+
+.heading{
+    padding-top: 30px;
+    padding-bottom: 15px;
+
+    .heading-title{
+        span.title{
+            font-size: 1.5em;
+            color: $gray;
+
+            small{
+                color: $gray-light;
+            }
+        }
+    }
+}
+
+.row{
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.quick-numbers{
+    .box{
+        padding: 15px;
+
+
+
+        .box-inner{
+            padding: 15px;
+            min-height: 150px;
+            background-color: #0d6aad;
+            color: #fff;
+
+            position: relative;
+
+            &:hover{
+                .box-icon{
+                    i{
+                        @include transition500ms;
+                        font-size: 5em;
+                    }
+                }
+            }
+
+            .box-icon{
+                position: absolute;
+                top: 0;
+                right: 0;
+
+                padding: 7px;
+
+                i{
+                    @include transition500ms;
+                    font-size: 4em;
+                    opacity: .5;
+                }
+            }
+
+            a.box-footer-link{
+                width: 100%;
+                padding: 5px;
+                color: #fff;
+                background-color: $info-lighter;
+
+                text-align: center;
+
+                position: absolute;
+                bottom:0;
+                left: 0;
+            }
+        }
+    }
+}
