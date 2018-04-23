@@ -65,4 +65,12 @@ class UserController extends Controller
             'token' => $token
         ], Config::get('constants.HTTP_STATUS.OK'));
     }
+
+    public function getPersonalInformation(){
+        $user = JWTAuth::parseToken()->toUser();
+
+        return response()->json([
+            'data' => $user
+        ], Config::get('constants.HTTP_STATUS.OK'));
+    }
 }

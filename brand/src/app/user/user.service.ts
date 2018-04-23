@@ -11,14 +11,14 @@ export class UserService {
 
     }
 
-    register(username: string, email: string, password: string) {
-        return this.http.post('http://localhost/20sections/api/v1/brand-register',
+    register(baseApiUrl, username: string, email: string, password: string) {
+        return this.http.post(baseApiUrl + 'brand-register',
             {name: username, email: email, password: password},
             {headers: new Headers({'X-Requested-With': 'XMLHttpRequest'})});
     }
 
-    login(email: string, password: string) {
-        return this.http.post('http://localhost/20sections/api/v1/brand-login',
+    login(baseApiUrl, email: string, password: string) {
+        return this.http.post(baseApiUrl + 'brand-login',
             {email: email, password: password},
             {headers: new Headers({'X-Requested-With': 'XMLHttpRequest'})})
             .map(
@@ -33,11 +33,26 @@ export class UserService {
                 tokenData => {
                     localStorage.setItem('token', tokenData.token);
                 }
-
             );
     }
 
     getToken() {
         return localStorage.getItem('token');
+    }
+
+    checkLoggedIn() {
+        if (!this.getToken()) {
+            return false;
+        }
+        return true;
+    }
+
+    getPersonalInformation(baseApiUrl): Observable<any> {
+        return this.http.get(baseApiUrl + 'personal-information?token=' + this.getToken())
+            .map(
+                (response: Response) => {
+                    return response.json().data;
+                }
+            )
     }
 }
