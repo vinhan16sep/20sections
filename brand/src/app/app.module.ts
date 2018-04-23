@@ -20,6 +20,7 @@ import { AppHeaderComponent } from './layout/app-header/app-header.component';
 import { HomeLayoutComponent } from './layout/home-layout/home-layout.component';
 import { HomeHeaderComponent } from './layout/home-header/home-header.component';
 import { HomeFooterComponent } from './layout/home-footer/home-footer.component';
+import { AppSidebarComponent } from './layout/app-sidebar/app-sidebar.component';
 
 @NgModule({
     declarations: [
@@ -31,7 +32,8 @@ import { HomeFooterComponent } from './layout/home-footer/home-footer.component'
         AppHeaderComponent,
         HomeLayoutComponent,
         HomeHeaderComponent,
-        HomeFooterComponent
+        HomeFooterComponent,
+        AppSidebarComponent
     ],
     imports: [
         BrowserModule,
